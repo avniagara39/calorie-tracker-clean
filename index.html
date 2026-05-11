@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Счётчик калорий</title>
+<link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+<div class="app">
+  <h1>🥗 Счётчик калорий</h1>
+  <div class="subtitle">Автопоиск по встроенной базе продуктов. Введи продукт, выбери подсказку и укажи граммы.</div>
+
+  <div class="form">
+    <div class="field">
+      <input id="name" placeholder="Начни писать: огурец, хлеб, молоко..." autocomplete="off" oninput="showSuggestions()" onkeydown="handleEnter(event)" />
+      <div id="suggestions" class="suggestions" style="background:rgba(11,18,32,0.97); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow:0 18px 44px rgba(0,0,0,0.55);"></div>
+      <div id="notfound" class="notfound"></div>
+    </div>
+    <input id="grams" type="number" min="1" placeholder="Граммы" onkeydown="handleEnter(event)" />
+    <button type="button" onclick="addItem()">Добавить</button>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; align-items:stretch; gap:12px; margin:22px 0 0;">
+    <div class="summary" style="flex:1 1 480px; margin:0;">
+      <div class="box">Продуктов<span id="totalItems">0</span></div>
+      <div class="box">Ккал<span id="totalCalories">0</span></div>
+      <div class="box">Белки<span id="totalProtein">0 г</span></div>
+      <div class="box">Жиры<span id="totalFat">0 г</span></div>
+      <div class="box">Углеводы<span id="totalCarbs">0 г</span></div>
+    </div>
+    <button type="button" class="btn-clear" title="В будущем здесь будет отправка рациона специалисту" aria-label="В будущем здесь будет отправка рациона специалисту" style="flex:0 0 auto; align-self:center; max-width:100%;" onclick="alert('Функция отправки рациона специалисту будет добавлена в следующей версии.');">Отправить рацион специалисту</button>
+  </div>
+
+  <div class="list-section">
+    <div class="panel-title">
+      <h2>Список блюд и продуктов</h2>
+      <div class="panel-actions">
+        <span class="hint">Данные примерные, на 100 г</span>
+        <button type="button" class="btn-clear" onclick="clearAll()">Очистить всё</button>
+      </div>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+<script src="./js/app.js"></script>
+</body>
+</html>
