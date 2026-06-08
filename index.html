@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Счётчик калорий</title>
+<title>Дневник питания</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,7 +13,9 @@
     --bg0: #0b1220;
     --bg1: #0b1f19;
     --text: rgba(255,255,255,0.92);
-    --muted: rgba(255,255,255,0.62);
+    --muted: rgba(255,255,255,0.70);
+    --accent: #7FE36A;
+    --accent-glow: rgba(127, 227, 106, 0.42);
     --line: rgba(255,255,255,0.10);
     --glass: rgba(255,255,255,0.08);
     --glass2: rgba(255,255,255,0.12);
@@ -76,20 +78,6 @@
       linear-gradient(315deg, rgba(34,197,94,0.10), rgba(255,255,255,0) 40%);
     mix-blend-mode: overlay;
     opacity: 0.6;
-  }
-  h1 {
-    text-align: center;
-    margin: 0 0 8px;
-    font-size: 34px;
-    letter-spacing: -0.02em;
-  }
-  .subtitle { text-align: center; color: var(--muted); margin-bottom: 22px; line-height: 1.45; }
-  .form {
-    display: grid;
-    grid-template-columns: 1.8fr 0.8fr auto;
-    gap: 12px;
-    align-items: start;
-    margin-bottom: 20px;
   }
   .field { position: relative; }
   input {
@@ -177,8 +165,8 @@
     border-bottom: 1px solid rgba(255,255,255,0.12);
   }
   .box {
-    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
-    border: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.07));
+    border: 1px solid rgba(127, 227, 106, 0.08);
     border-radius: 18px;
     padding: 16px;
     text-align: center;
@@ -192,43 +180,6 @@
     color: rgba(255,255,255,0.92);
     letter-spacing: -0.02em;
   }
-  .list-section {
-    margin-top: 24px;
-    padding-top: 8px;
-  }
-  .list-section::before {
-    content: "";
-    display: block;
-    height: 3px;
-    margin: 0 0 20px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, transparent, rgba(34,197,94,0.55), rgba(59,130,246,0.28), transparent);
-  }
-  .panel-title { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top: 0; flex-wrap: wrap; }
-  .panel-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-left: auto; }
-  .hint { color: var(--muted); font-size:14px; }
-  .item {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 12px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 10px;
-    box-shadow: 0 14px 38px rgba(0,0,0,0.30);
-    transform: translateY(0);
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
-  }
-  .item:hover{
-    transform: translateY(-1px);
-    border-color: rgba(255,255,255,0.18);
-    box-shadow: 0 18px 50px rgba(0,0,0,0.38);
-    background: rgba(255,255,255,0.075);
-  }
-  .item b { font-size: 18px; }
   .meta { color: rgba(255,255,255,0.70); margin-top: 6px; line-height: 1.6; }
   .delete {
     background: rgba(255,255,255,0.06);
@@ -249,242 +200,2630 @@
     border-color: rgba(251,113,133,0.35);
     transform: translateY(-1px);
   }
-  .empty { text-align:center; color: var(--muted); padding:24px; border:1px dashed rgba(255,255,255,0.18); border-radius:18px; background: rgba(255,255,255,0.04); }
   .notfound { margin-top: 8px; color: rgba(251,191,36,0.92); font-size:14px; line-height: 1.45; }
+  .diary-section {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .app-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 0 0 18px;
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .app-title-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: auto;
+    height: auto;
+    line-height: 1;
+    background: none;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .app-title-icon::after {
+    content: "";
+    position: absolute;
+    left: 52%;
+    top: 45%;
+    width: 26%;
+    height: 26%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(127, 227, 106, 0.75) 0%, rgba(52, 211, 153, 0.38) 42%, transparent 72%);
+    filter: blur(7px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .app-title-icon-img {
+    position: relative;
+    z-index: 1;
+    width: 118px;
+    height: 118px;
+    max-width: 118px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    filter: none;
+  }
+  .app-title-text {
+    max-width: 100%;
+    align-self: center;
+  }
+  .diary-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    gap: 8px;
+    align-items: stretch;
+    margin-bottom: 16px;
+  }
+  .diary-controls > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 14px;
+    white-space: nowrap;
+    width: auto;
+    max-width: max-content;
+  }
+  .diary-controls > button:not(.btn-clear) {
+    box-shadow:
+      0 10px 26px rgba(34,197,94,0.22),
+      0 0 18px rgba(52,211,153,0.14);
+  }
+  .diary-controls .btn-clear {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .diary-controls > button:nth-child(3) {
+    padding: 10px 11px;
+    font-size: 12px;
+  }
+  .diary-controls > button:nth-child(4) {
+    padding: 10px 9px;
+    font-size: 12px;
+  }
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: currentColor;
+  }
+  .btn-icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .btn-label-short { display: none; }
+  .copy-diary-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(16px);
+    max-width: min(520px, calc(100vw - 32px));
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(34,197,94,0.35);
+    background: rgba(16,24,34,0.92);
+    color: rgba(255,255,255,0.92);
+    font-size: 14px;
+    line-height: 1.45;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .22s ease, transform .22s ease;
+    z-index: 1200;
+  }
+  .copy-diary-toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .share-diary-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .share-diary-modal.is-open { display: flex; }
+  .share-diary-modal-panel {
+    width: min(420px, 100%);
+    padding: 22px 20px 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(127, 227, 106, 0.14);
+    background: linear-gradient(180deg, rgba(22,32,28,0.98), rgba(16,24,34,0.98));
+    box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+  }
+  .share-diary-modal-title {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.94);
+    letter-spacing: -0.01em;
+  }
+  .share-diary-modal-hint {
+    margin: 0 0 18px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.72);
+  }
+  .share-diary-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .share-diary-btn {
+    width: 100%;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+    color: rgba(255,255,255,0.92);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color .18s ease, background .18s ease, transform .18s ease;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.22);
+  }
+  .share-diary-btn:hover {
+    border-color: rgba(127, 227, 106, 0.28);
+    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(127, 227, 106, 0.06));
+    transform: translateY(-1px);
+  }
+  .share-diary-btn-copy {
+    border-color: rgba(127, 227, 106, 0.22);
+    box-shadow:
+      0 8px 22px rgba(0,0,0,0.22),
+      0 0 16px rgba(52, 211, 153, 0.10);
+  }
+  .share-modal-button {
+    gap: 16px;
+  }
+  .share-action-icon {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+  }
+  @media (max-width: 430px) {
+    .share-action-icon {
+      width: 38px !important;
+      height: 38px !important;
+      min-width: 38px;
+    }
+  }
+  .share-diary-modal-close {
+    width: 100%;
+    min-height: 44px;
+  }
+  .share-diary-manual {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+  }
+  .share-diary-manual.is-visible {
+    display: block;
+  }
+  .share-diary-manual-hint {
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.72);
+  }
+  .share-diary-manual textarea {
+    width: 100%;
+    min-height: 200px;
+    resize: vertical;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.9);
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.45;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+  .share-diary-manual-select {
+    width: 100%;
+    margin-top: 10px;
+    min-height: 44px;
+  }
+  .diary-date-picker {
+    position: relative;
+    min-width: 0;
+    width: 100%;
+  }
+  .diary-date-card {
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(127, 227, 106, 0.14);
+    background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.07));
+    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+    color: rgba(255,255,255,0.94);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .22s ease, box-shadow .22s ease, background .22s ease, transform .22s ease;
+  }
+  .diary-date-card:hover {
+    border-color: rgba(127, 227, 106, 0.38);
+    background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(127, 227, 106, 0.06));
+    box-shadow:
+      0 12px 32px rgba(0,0,0,0.24),
+      0 0 24px rgba(52, 211, 153, 0.12);
+    transform: translateY(-1px);
+    filter: none;
+  }
+  .diary-date-card:active {
+    transform: translateY(0);
+  }
+  .diary-date-card-text {
+    flex: 1;
+    min-width: 0;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .diary-date-card-icon {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 28px;
+    line-height: 0;
+    opacity: 1;
+    background: none;
+    overflow: visible;
+  }
+  .diary-date-card-icon-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: block;
+    width: 90px;
+    height: 90px;
+    max-width: none;
+    object-fit: contain;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    filter: none;
+    transform: translate(-50%, -50%);
+  }
+  .diary-date-input-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+    color-scheme: dark;
+  }
+  .diary-info {
+    background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.07));
+    border: 1px solid rgba(127, 227, 106, 0.10);
+    border-radius: 18px;
+    padding: 14px 16px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+  }
+  .diary-summary {
+    display: grid;
+    grid-template-columns: 1.32fr repeat(4, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+  .diary-summary .box:first-child .diary-stat-label {
+    white-space: nowrap;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .diary-summary .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 96px;
+    padding: 14px 10px 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.07));
+    border-color: rgba(127, 227, 106, 0.10);
+  }
+  .diary-stat-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 0 9px rgba(127, 227, 106, 0.45));
+    flex-shrink: 0;
+    overflow: visible;
+  }
+  .diary-stat-icon-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 52px;
+    height: 52px;
+    max-width: none;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+    border: none;
+    transform: translate(-50%, -50%);
+  }
+  .diary-summary .diary-stat-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    height: 36px;
+    font-size: 13px;
+    line-height: 1.3;
+    font-weight: 600;
+    color: rgba(255,255,255,0.82);
+    letter-spacing: 0.01em;
+  }
+  .diary-summary .diary-stat-value {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: rgba(255,255,255,0.92);
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+  .meal-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .meal-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+    border: 1px solid rgba(127, 227, 106, 0.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 18px;
+    box-shadow: 0 14px 38px rgba(0,0,0,0.30);
+    overflow: hidden;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .meal-card.is-open {
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(127, 227, 106, 0.04));
+    border-color: rgba(127, 227, 106, 0.22);
+    box-shadow:
+      0 18px 50px rgba(0,0,0,0.38),
+      0 0 28px rgba(52, 211, 153, 0.08);
+  }
+  .meal-card-header-main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    min-width: 0;
+    flex: 1;
+  }
+  .meal-card-meal-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    align-self: center;
+    overflow: visible;
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+  }
+  .meal-card-meal-icon-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 56px;
+    height: 56px;
+    max-width: none;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+    border: none;
+    transform: translate(-50%, -50%);
+  }
+  .meal-card-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    flex: 1;
+  }
+  .meal-card-summary {
+    display: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.74);
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .meal-card:not(.is-open) .meal-card-summary {
+    display: block;
+  }
+  .meal-card:not(.is-open) .meal-card-title {
+    display: none;
+  }
+  .meal-card-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .meal-card-header:hover {
+    background: rgba(255,255,255,0.04);
+    transform: none;
+    filter: none;
+  }
+  .meal-card-chevron {
+    color: var(--muted);
+    font-size: 14px;
+    transition: transform .18s ease;
+    flex-shrink: 0;
+  }
+  .meal-card.is-open .meal-card-chevron {
+    transform: rotate(180deg);
+  }
+  .meal-card-body {
+    display: none;
+    padding: 0 18px 18px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .meal-card.is-open .meal-card-body {
+    display: block;
+    padding-top: 16px;
+  }
+  .meal-time-row {
+    margin-bottom: 10px;
+  }
+  .meal-time-label {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  .slot-label,
+  .meal-feeling-label {
+    display: block;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .meal-time-picker {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.16);
+  }
+  .meal-time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .meal-time-inputs select {
+    width: auto;
+    min-width: 58px;
+    max-width: 72px;
+    padding: 7px 9px;
+    border-radius: 9px;
+    font-size: 14px;
+  }
+  .meal-time-separator {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0 1px;
+    user-select: none;
+  }
+  .meal-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .slot-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+  .slot-stub {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .meal-feeling-row textarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    outline: none;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    background: rgba(10,16,24,0.55);
+    color: var(--text);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .meal-feeling-row textarea::placeholder {
+    color: rgba(255,255,255,0.42);
+  }
+  .meal-feeling-row textarea:hover {
+    border-color: rgba(255,255,255,0.18);
+  }
+  .meal-feeling-row textarea:focus {
+    border-color: rgba(34,197,94,0.60);
+    box-shadow:
+      0 0 0 4px rgba(34,197,94,0.18),
+      0 12px 30px rgba(0,0,0,0.35);
+    background: rgba(10,16,24,0.70);
+  }
+  select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    outline: none;
+    font-size: 16px;
+    font-family: inherit;
+    background: rgba(10,16,24,0.55);
+    color: var(--text);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    color-scheme: dark;
+  }
+  select:hover { border-color: rgba(255,255,255,0.18); }
+  select:focus {
+    border-color: rgba(34,197,94,0.60);
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.18), 0 12px 30px rgba(0,0,0,0.35);
+    background: rgba(10,16,24,0.70);
+  }
+  .breakfast-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .breakfast-slot-row {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+    transition: border-color .18s ease, background .18s ease;
+  }
+  .breakfast-slot-row.is-filled {
+    border-color: rgba(52,211,153,0.38);
+    background: linear-gradient(180deg, rgba(12,22,18,0.78), rgba(10,16,24,0.68));
+    box-shadow: 0 10px 28px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.07);
+  }
+  .breakfast-slot-row.is-filled .breakfast-slot-label {
+    color: rgba(255,255,255,0.96);
+  }
+  .breakfast-slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .breakfast-slot-label {
+    font-weight: 700;
+    font-size: 15px;
+    color: rgba(255,255,255,0.90);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .breakfast-slot-check {
+    font-size: 14px;
+    line-height: 1;
+  }
+  .breakfast-slot-status {
+    font-size: 12px;
+    font-weight: 600;
+    color: #a7f3d0;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(34,197,94,0.18);
+    border: 1px solid rgba(52,211,153,0.35);
+  }
+  .breakfast-add-more {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 14px;
+    color: rgba(240,253,244,0.95);
+    background: linear-gradient(180deg, rgba(34,197,94,0.30), rgba(22,163,74,0.24));
+    border: 1px solid rgba(52,211,153,0.48);
+    box-shadow: 0 0 0 0 rgba(34,197,94,0.2);
+    animation: breakfast-addmore-pulse 3.2s ease-in-out infinite;
+  }
+  .breakfast-add-more:hover {
+    background: linear-gradient(180deg, rgba(34,197,94,0.44), rgba(22,163,74,0.36));
+    border-color: rgba(74,222,128,0.62);
+    box-shadow: 0 0 18px rgba(34,197,94,0.32);
+    transform: translateY(-1px);
+    filter: none;
+  }
+  @keyframes breakfast-addmore-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.16); }
+    50% { box-shadow: 0 0 14px 2px rgba(34,197,94,0.24); }
+  }
+  .breakfast-slot-items {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(8,14,22,0.58);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .breakfast-slot-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 12px;
+    margin-bottom: 6px;
+    color: rgba(255,255,255,0.92);
+  }
+  .breakfast-slot-item:last-child { margin-bottom: 0; }
+  .breakfast-slot-item-meta {
+    color: rgba(255,255,255,0.72);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .breakfast-slot-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .breakfast-form-extra-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .breakfast-form-cancel {
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.75);
+    border-radius: 10px;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: none;
+    font-weight: 600;
+  }
+  .breakfast-form-cancel:hover {
+    background: rgba(251,113,133,0.14);
+    border-color: rgba(251,113,133,0.35);
+    color: rgba(255,255,255,0.92);
+    transform: none;
+    filter: none;
+  }
+  .breakfast-slot-item .delete {
+    padding: 6px 9px;
+    min-width: 34px;
+    font-size: 16px;
+  }
+  .breakfast-manual {
+    margin-top: 8px;
+    padding: 12px 14px;
+    border: 1px dashed rgba(251,191,36,0.45);
+    border-radius: 12px;
+    background: rgba(251,191,36,0.07);
+  }
+  .breakfast-manual-title {
+    color: rgba(251,191,36,0.95);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .breakfast-manual-panel {
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(251,191,36,0.38);
+    background: rgba(10,16,24,0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .breakfast-manual-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .breakfast-manual-full {
+    grid-column: 1 / -1;
+  }
+  .breakfast-manual-panel label,
+  .breakfast-manual-fields label {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .breakfast-manual-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .breakfast-legacy-block {
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px dashed rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.04);
+  }
+  .breakfast-legacy-title {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .breakfast-slot-form {
+    display: grid;
+    grid-template-columns: 1.8fr 0.75fr auto;
+    gap: 10px;
+    align-items: start;
+  }
+  .breakfast-slot-form button {
+    padding: 14px 16px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .meal-entries-list {
+    margin-bottom: 16px;
+  }
+  .meal-entries-list .empty {
+    margin-bottom: 0;
+  }
+  .meal-entry .meta {
+    font-size: 13px;
+  }
+  .meal-entry-category {
+    color: rgba(34,197,94,0.85);
+    font-weight: 600;
+  }
+  .meal-totals-wrap {
+    margin-bottom: 16px;
+  }
+  .meal-totals-title {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .meal-totals {
+    margin: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    grid-template-columns: repeat(4, 1fr);
+  }
   @media (prefers-reduced-motion: reduce){
     *{ transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    .breakfast-add-more { animation: none !important; }
   }
   @media (max-width: 760px) {
-    body { padding: 14px; }
-    .form { grid-template-columns: 1fr; }
     .summary { grid-template-columns: repeat(2, 1fr); }
-    h1 { font-size: 28px; }
-    .panel-actions { margin-left: 0; width: 100%; justify-content: flex-start; }
+    .diary-summary { grid-template-columns: repeat(2, 1fr); }
+    .slot-row { grid-template-columns: 1fr; }
+    .breakfast-slot-form { grid-template-columns: 1fr; }
+    .breakfast-manual-form-grid { grid-template-columns: 1fr; }
+    .meal-totals { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 430px) {
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    body { padding: 12px; }
+    .app {
+      padding: 18px 14px 16px;
+      overflow-x: hidden;
+    }
+    .app-title {
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 28px;
+      line-height: 1.05;
+    }
+    .app-title-text {
+      white-space: nowrap;
+    }
+    .app-title-icon-img {
+      width: 96px;
+      height: 96px;
+      max-width: 96px;
+    }
+    .diary-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "date date"
+        "newday newday"
+        "clear share";
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .diary-date-picker {
+      grid-area: date;
+      min-width: 0;
+      width: 100%;
+    }
+    .diary-date-card {
+      width: 100%;
+      font-size: 13px;
+      padding: 10px 12px;
+      gap: 10px;
+    }
+    .diary-date-card-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      justify-content: center;
+    }
+    .diary-date-card-icon {
+      width: 36px;
+      height: 22px;
+    }
+    .diary-date-card-icon-img {
+      width: 56px;
+      height: 56px;
+    }
+    .diary-controls > button {
+      width: 100%;
+      max-width: none;
+      min-height: 44px;
+      height: 44px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .diary-controls > button:nth-child(2) {
+      grid-area: newday;
+    }
+    .diary-controls > button:nth-child(3) {
+      grid-area: clear;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .diary-controls > button:nth-child(4) {
+      grid-area: share;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .diary-controls .btn-clear {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .btn-label-full { display: none; }
+    .btn-label-short { display: inline; }
+    .diary-summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .diary-summary .box {
+      min-height: 96px;
+      padding: 12px 8px 14px;
+    }
+    .diary-summary .diary-stat-value {
+      font-size: 21px;
+    }
+    .diary-summary .diary-stat-label {
+      font-size: 12px;
+      height: 34px;
+    }
+    .meal-cards {
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .meal-card {
+      width: 100%;
+    }
+    .meal-card-header {
+      padding: 13px 15px;
+      font-size: 16px;
+      gap: 10px;
+    }
+    .meal-card-body {
+      padding: 0 15px 15px;
+    }
+    .meal-card.is-open .meal-card-body {
+      padding-top: 13px;
+    }
+    .meal-card-title {
+      white-space: nowrap;
+    }
+    .meal-card-summary {
+      font-size: 12px;
+    }
+    .meal-card-chevron {
+      flex-shrink: 0;
+    }
+    .slot-label,
+    .meal-feeling-label {
+      font-size: 13px;
+    }
+    .meal-totals-title {
+      font-size: 13px;
+    }
+    .meal-totals .box span {
+      font-size: 21px;
+    }
+    input {
+      font-size: 15px;
+      padding: 12px 14px;
+    }
+  }
+  @media (max-width: 390px) {
+    .app-title { font-size: 26px; }
+    .app-title-icon-img {
+      width: 88px;
+      height: 88px;
+      max-width: 88px;
+    }
+    .diary-date-card { font-size: 12px; }
+    .diary-date-card-icon-img { width: 52px; height: 52px; }
+    .diary-summary .diary-stat-value { font-size: 20px; }
+    .meal-card-header { font-size: 15px; }
+  }
+  @media (max-width: 375px) {
+    .app-title { font-size: 25px; gap: 8px; }
+    .app-title-icon-img {
+      width: 84px;
+      height: 84px;
+      max-width: 84px;
+    }
+    .diary-controls > button { font-size: 12px; padding: 10px 10px; }
+  }
+  @media (max-width: 360px) {
+    .app-title { font-size: 24px; }
+    .app-title-icon-img {
+      width: 80px;
+      height: 80px;
+      max-width: 80px;
+    }
+    .diary-date-card { font-size: 11.5px; padding: 9px 10px; }
+    .diary-summary .diary-stat-label { font-size: 11px; }
+  }
+  @media (max-width: 320px) {
+    body { padding: 10px; }
+    .app { padding: 14px 10px 14px; }
+    .app-title { font-size: 22px; gap: 8px; }
+    .app-title-icon-img {
+      width: 76px;
+      height: 76px;
+      max-width: 76px;
+    }
+    .diary-date-card { font-size: 11px; }
+    .diary-date-card-icon-img { width: 48px; height: 48px; }
+    .diary-controls > button { font-size: 11.5px; padding: 10px 8px; gap: 6px; }
+    .diary-summary .diary-stat-value { font-size: 18px; }
+    .meal-card-header { padding: 12px 13px; font-size: 14px; }
   }
 </style>
 </head>
 <body>
 <div class="app">
-  <h1>🥗 Счётчик калорий</h1>
-  <div class="subtitle">Автопоиск по встроенной базе продуктов. Введи продукт, выбери подсказку и укажи граммы.</div>
-
-  <div class="form">
-    <div class="field">
-      <input id="name" placeholder="Начни писать: огурец, хлеб, молоко..." autocomplete="off" oninput="showSuggestions()" onkeydown="handleEnter(event)" />
-      <div id="suggestions" class="suggestions"></div>
-      <div id="notfound" class="notfound"></div>
+  <section class="diary-section" aria-label="Дневник питания">
+    <h1 class="app-title">
+      <span class="app-title-icon" aria-hidden="true">
+        <img src="icons/diary-icon.png" alt="" class="app-title-icon-img" width="118" height="118" decoding="async" />
+      </span>
+      <span class="app-title-text">Дневник питания</span>
+    </h1>
+    <div class="diary-controls">
+      <div class="diary-date-picker">
+        <button type="button" class="diary-date-card" id="diaryDateCard" onclick="openDiaryDatePicker()" aria-label="Выбрать дату">
+          <span class="diary-date-card-icon" aria-hidden="true">
+            <img src="icons/calendar-icon.png" alt="" class="diary-date-card-icon-img" width="90" height="90" decoding="async" />
+          </span>
+          <span class="diary-date-card-text" id="diaryDateCardText"></span>
+        </button>
+        <input type="date" id="diaryDate" class="diary-date-input-hidden" onchange="onDiaryDateChange()" tabindex="-1" aria-hidden="true" />
+      </div>
+      <button type="button" onclick="startNewDay()"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>Новый день</button>
+      <button type="button" class="btn-clear" onclick="clearDiaryDay()"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span>Очистить день</button>
+      <button type="button" class="btn-clear btn-share-diary" onclick="copyDiaryReport()"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg></span><span class="btn-label-full">Поделиться дневником</span><span class="btn-label-short">Поделиться</span></button>
     </div>
-    <input id="grams" type="number" min="1" placeholder="Граммы" onkeydown="handleEnter(event)" />
-    <button type="button" onclick="addItem()">Добавить</button>
-  </div>
-
-  <div class="summary">
-    <div class="box">Продуктов<span id="totalItems">0</span></div>
-    <div class="box">Ккал<span id="totalCalories">0</span></div>
-    <div class="box">Белки<span id="totalProtein">0 г</span></div>
-    <div class="box">Жиры<span id="totalFat">0 г</span></div>
-    <div class="box">Углеводы<span id="totalCarbs">0 г</span></div>
-  </div>
-
-  <div class="list-section">
-    <div class="panel-title">
-      <h2>Список блюд и продуктов</h2>
-      <div class="panel-actions">
-        <span class="hint">Данные примерные, на 100 г</span>
-        <button type="button" class="btn-clear" onclick="clearAll()">Очистить всё</button>
+    <div class="diary-info">
+      <div class="diary-summary">
+        <div class="box">
+          <span class="diary-stat-icon" aria-hidden="true"><img src="icons/meals-icon.png" alt="" class="diary-stat-icon-img" width="52" height="52" decoding="async" /></span>
+          <div class="diary-stat-label">Приёмов пищи</div><div class="diary-stat-value" id="diaryMeals">0</div>
+        </div>
+        <div class="box">
+          <span class="diary-stat-icon" aria-hidden="true"><img src="icons/calories-icon.png" alt="" class="diary-stat-icon-img" width="52" height="52" decoding="async" /></span>
+          <div class="diary-stat-label">Ккал за день</div><div class="diary-stat-value" id="diaryCalories">0</div>
+        </div>
+        <div class="box">
+          <span class="diary-stat-icon" aria-hidden="true"><img src="icons/protein-icon.png" alt="" class="diary-stat-icon-img" width="52" height="52" decoding="async" /></span>
+          <div class="diary-stat-label">Белки</div><div class="diary-stat-value" id="diaryProtein">0 г</div>
+        </div>
+        <div class="box">
+          <span class="diary-stat-icon" aria-hidden="true"><img src="icons/fat-icon.png" alt="" class="diary-stat-icon-img" width="52" height="52" decoding="async" /></span>
+          <div class="diary-stat-label">Жиры</div><div class="diary-stat-value" id="diaryFat">0 г</div>
+        </div>
+        <div class="box">
+          <span class="diary-stat-icon" aria-hidden="true"><img src="icons/carbs-icon.png" alt="" class="diary-stat-icon-img" width="52" height="52" decoding="async" /></span>
+          <div class="diary-stat-label">Углеводы</div><div class="diary-stat-value" id="diaryCarbs">0 г</div>
+        </div>
       </div>
     </div>
-    <div id="list"></div>
+
+    <div class="meal-cards" id="mealCards"></div>
+  </section>
+</div>
+<div id="copyDiaryToast" class="copy-diary-toast" role="status" aria-live="polite"></div>
+<div id="shareDiaryModal" class="share-diary-modal" role="dialog" aria-modal="true" aria-labelledby="shareDiaryModalTitle" onclick="if(event.target===this)closeShareDiaryModal()">
+  <div class="share-diary-modal-panel">
+    <h2 id="shareDiaryModalTitle" class="share-diary-modal-title">Поделиться дневником</h2>
+    <p class="share-diary-modal-hint">Скопируйте отчёт или отправьте его в мессенджер.</p>
+    <div class="share-diary-modal-actions">
+      <button type="button" class="share-diary-btn share-diary-btn-copy share-modal-button" onclick="copyShareDiaryReport()"><img src="icons/icon-copy-report.png" alt="" class="share-action-icon" width="42" height="42" decoding="async" aria-hidden="true" /><span>Скопировать отчёт</span></button>
+      <button type="button" class="share-diary-btn share-modal-button" onclick="shareDiaryToTelegram()"><img src="icons/icon-telegram.png" alt="" class="share-action-icon" width="42" height="42" decoding="async" aria-hidden="true" /><span>Telegram</span></button>
+      <button type="button" class="share-diary-btn share-modal-button" onclick="shareDiaryToMax()"><img src="icons/icon-max.png" alt="" class="share-action-icon" width="42" height="42" decoding="async" aria-hidden="true" /><span>MAX</span></button>
+    </div>
+    <div id="shareDiaryManual" class="share-diary-manual">
+      <p class="share-diary-manual-hint">Браузер не разрешил автоматическое копирование. Выделите отчёт и скопируйте вручную (Ctrl+C).</p>
+      <textarea id="shareDiaryManualText" readonly></textarea>
+      <button type="button" class="btn-clear share-diary-manual-select" onclick="selectShareDiaryManualText()">Выделить весь отчёт</button>
+    </div>
+    <button type="button" class="btn-clear share-diary-modal-close" onclick="closeShareDiaryModal()">Закрыть</button>
   </div>
 </div>
+<script src="foods.js"></script>
 <script>
-const STORAGE_KEY = "calorie_counter_items_v1";
-const DRAFT_KEY = "calorie_counter_draft_v1";
-const foodDB = {
-  "огурец": {cal:15,p:0.8,f:0.1,c:3.0}, "помидор": {cal:20,p:1.0,f:0.2,c:4.0}, "томаты": {cal:20,p:1.0,f:0.2,c:4.0}, "картофель": {cal:77,p:2.0,f:0.1,c:17.0}, "морковь": {cal:41,p:0.9,f:0.2,c:9.6},
-  "свекла": {cal:43,p:1.6,f:0.2,c:9.6}, "капуста белокочанная": {cal:27,p:1.8,f:0.1,c:6.0}, "капуста цветная": {cal:25,p:1.9,f:0.3,c:5.0}, "брокколи": {cal:34,p:2.8,f:0.4,c:6.6}, "кабачок": {cal:24,p:0.6,f:0.3,c:4.6},
-  "баклажан": {cal:25,p:1.0,f:0.2,c:5.9}, "перец болгарский": {cal:27,p:1.0,f:0.2,c:6.0}, "лук репчатый": {cal:40,p:1.1,f:0.1,c:9.3}, "чеснок": {cal:149,p:6.4,f:0.5,c:33.1}, "редис": {cal:16,p:0.7,f:0.1,c:3.4},
-  "тыква": {cal:26,p:1.0,f:0.1,c:6.5}, "салат листовой": {cal:15,p:1.4,f:0.2,c:2.9}, "шпинат": {cal:23,p:2.9,f:0.4,c:3.6}, "укроп": {cal:43,p:3.5,f:1.1,c:7.0}, "петрушка": {cal:36,p:3.0,f:0.8,c:6.3},
-  "яблоко": {cal:52,p:0.3,f:0.2,c:14.0}, "банан": {cal:89,p:1.1,f:0.3,c:23.0}, "груша": {cal:57,p:0.4,f:0.1,c:15.0}, "апельсин": {cal:47,p:0.9,f:0.1,c:12.0}, "мандарин": {cal:53,p:0.8,f:0.3,c:13.3},
-  "лимон": {cal:29,p:1.1,f:0.3,c:9.3}, "киви": {cal:61,p:1.1,f:0.5,c:15.0}, "виноград": {cal:69,p:0.7,f:0.2,c:18.0}, "арбуз": {cal:30,p:0.6,f:0.2,c:7.6}, "дыня": {cal:34,p:0.8,f:0.2,c:8.2},
-  "персик": {cal:39,p:0.9,f:0.3,c:10.0}, "нектарин": {cal:44,p:1.1,f:0.3,c:11.0}, "слива": {cal:46,p:0.7,f:0.3,c:11.4}, "абрикос": {cal:48,p:1.4,f:0.4,c:11.1}, "гранат": {cal:83,p:1.7,f:1.2,c:18.7},
-  "ананас": {cal:50,p:0.5,f:0.1,c:13.1}, "манго": {cal:60,p:0.8,f:0.4,c:15.0}, "хурма": {cal:67,p:0.5,f:0.4,c:15.3}, "клубника": {cal:32,p:0.7,f:0.3,c:7.7}, "малина": {cal:52,p:1.2,f:0.7,c:12.0},
-  "черника": {cal:57,p:0.7,f:0.3,c:14.5}, "смородина": {cal:63,p:1.4,f:0.4,c:15.4}, "вишня": {cal:50,p:1.0,f:0.3,c:12.2}, "черешня": {cal:63,p:1.1,f:0.2,c:16.0}, "клюква": {cal:46,p:0.4,f:0.1,c:12.2},
-  "изюм": {cal:299,p:3.1,f:0.5,c:79.2}, "курага": {cal:241,p:3.4,f:0.5,c:63.0}, "чернослив": {cal:240,p:2.2,f:0.4,c:64.0}, "финики": {cal:282,p:2.5,f:0.4,c:75.0}, "инжир сушеный": {cal:249,p:3.3,f:0.9,c:64.0},
-  "хлеб белый": {cal:265,p:8.0,f:3.2,c:49.0}, "хлеб ржаной": {cal:210,p:6.6,f:1.2,c:43.0}, "хлеб цельнозерновой": {cal:247,p:13.0,f:4.2,c:41.0}, "батон": {cal:263,p:7.5,f:2.9,c:51.0}, "лаваш": {cal:275,p:9.1,f:1.2,c:56.0},
-  "сухари": {cal:350,p:11.0,f:1.5,c:73.0}, "галеты": {cal:393,p:9.7,f:10.2,c:65.0}, "баранки": {cal:336,p:10.0,f:1.3,c:69.0}, "булочка": {cal:310,p:8.0,f:6.0,c:56.0}, "круассан": {cal:406,p:8.2,f:21.0,c:45.0},
-  "мука пшеничная": {cal:364,p:10.3,f:1.0,c:76.0}, "мука ржаная": {cal:325,p:9.0,f:1.7,c:68.0}, "овсяные хлопья": {cal:366,p:11.9,f:7.2,c:69.0}, "гречка вареная": {cal:110,p:3.6,f:1.1,c:21.0}, "гречка сухая": {cal:343,p:13.3,f:3.4,c:72.0},
-  "рис вареный": {cal:130,p:2.7,f:0.3,c:28.0}, "рис сухой": {cal:365,p:7.1,f:0.7,c:80.0}, "макароны вареные": {cal:131,p:5.0,f:1.1,c:25.0}, "макароны сухие": {cal:350,p:12.0,f:1.5,c:72.0}, "перловка вареная": {cal:109,p:3.1,f:0.4,c:22.0},
-  "пшено вареное": {cal:119,p:3.5,f:1.0,c:23.7}, "булгур вареный": {cal:83,p:3.1,f:0.2,c:18.6}, "киноа вареная": {cal:120,p:4.4,f:1.9,c:21.3}, "манка вареная": {cal:80,p:2.5,f:0.2,c:16.8}, "кукурузная каша": {cal:86,p:2.3,f:0.3,c:19.0},
-  "молоко 2.5%": {cal:52,p:2.8,f:2.5,c:4.7}, "молоко 3.2%": {cal:60,p:3.0,f:3.2,c:4.7}, "кефир 1%": {cal:40,p:3.0,f:1.0,c:4.0}, "кефир 2.5%": {cal:53,p:3.0,f:2.5,c:4.0}, "ряженка": {cal:67,p:2.8,f:4.0,c:4.2},
-  "йогурт натуральный": {cal:61,p:3.5,f:3.3,c:4.7}, "творог 5%": {cal:121,p:17.0,f:5.0,c:2.0}, "творог 9%": {cal:159,p:16.7,f:9.0,c:2.0}, "сметана 10%": {cal:119,p:2.7,f:10.0,c:3.9}, "сметана 20%": {cal:206,p:2.5,f:20.0,c:3.4},
-  "сыр российский": {cal:363,p:24.0,f:29.5,c:0.3}, "сыр гауда": {cal:356,p:25.0,f:27.0,c:2.2}, "сыр моцарелла": {cal:280,p:28.0,f:17.0,c:3.1}, "сыр фета": {cal:264,p:14.0,f:21.0,c:4.1}, "сыр плавленый": {cal:257,p:16.8,f:19.0,c:3.5},
-  "масло сливочное": {cal:748,p:0.5,f:82.5,c:0.8}, "сливки 10%": {cal:118,p:3.0,f:10.0,c:4.0}, "сливки 20%": {cal:206,p:2.8,f:20.0,c:3.7}, "мороженое пломбир": {cal:232,p:3.7,f:15.0,c:20.4}, "сгущенка": {cal:321,p:7.2,f:8.5,c:56.0},
-  "яйцо куриное": {cal:155,p:13.0,f:11.0,c:1.1}, "белок яйца": {cal:52,p:10.9,f:0.2,c:0.7}, "желток яйца": {cal:322,p:15.9,f:26.5,c:3.6}, "омлет": {cal:154,p:10.6,f:11.0,c:2.0}, "яичница": {cal:196,p:13.6,f:15.3,c:0.8},
-  "куриная грудка": {cal:165,p:31.0,f:3.6,c:0.0}, "куриное бедро": {cal:209,p:26.0,f:10.9,c:0.0}, "курица вареная": {cal:170,p:25.0,f:7.0,c:0.0}, "индейка": {cal:135,p:29.0,f:1.0,c:0.0}, "говядина": {cal:250,p:26.0,f:15.0,c:0.0},
-  "телятина": {cal:172,p:24.0,f:8.0,c:0.0}, "свинина": {cal:297,p:25.7,f:20.8,c:0.0}, "баранина": {cal:294,p:25.0,f:21.0,c:0.0}, "фарш говяжий": {cal:254,p:17.2,f:20.0,c:0.0}, "фарш куриный": {cal:143,p:17.4,f:8.1,c:0.0},
-  "печень куриная": {cal:137,p:20.4,f:5.9,c:0.7}, "печень говяжья": {cal:135,p:20.0,f:3.6,c:4.0}, "ветчина": {cal:145,p:21.0,f:6.0,c:1.0}, "колбаса вареная": {cal:257,p:12.8,f:22.2,c:1.5}, "колбаса копченая": {cal:507,p:24.0,f:45.0,c:0.5},
-  "сосиски": {cal:266,p:11.0,f:23.9,c:1.6}, "сардельки": {cal:332,p:10.0,f:31.0,c:1.5}, "бекон": {cal:541,p:37.0,f:42.0,c:1.4}, "сало": {cal:797,p:2.4,f:89.0,c:0.0}, "паштет": {cal:319,p:11.0,f:28.0,c:3.0},
-  "лосось": {cal:208,p:20.0,f:13.0,c:0.0}, "семга": {cal:208,p:20.0,f:13.0,c:0.0}, "форель": {cal:148,p:20.8,f:6.6,c:0.0}, "тунец": {cal:132,p:28.0,f:1.3,c:0.0}, "треска": {cal:82,p:18.0,f:0.7,c:0.0},
-  "минтай": {cal:72,p:16.0,f:0.9,c:0.0}, "хек": {cal:86,p:16.6,f:2.2,c:0.0}, "скумбрия": {cal:205,p:19.0,f:14.0,c:0.0}, "сельдь": {cal:217,p:19.8,f:15.4,c:0.0}, "сардина": {cal:208,p:25.0,f:11.0,c:0.0},
-  "креветки": {cal:99,p:24.0,f:0.3,c:0.2}, "кальмар": {cal:92,p:15.6,f:1.4,c:3.1}, "мидии": {cal:86,p:12.0,f:2.2,c:3.7}, "икра красная": {cal:250,p:31.0,f:13.0,c:1.0}, "крабовые палочки": {cal:95,p:7.0,f:1.0,c:15.0},
-  "фасоль вареная": {cal:127,p:8.7,f:0.5,c:22.8}, "горох вареный": {cal:118,p:8.3,f:0.4,c:21.1}, "чечевица вареная": {cal:116,p:9.0,f:0.4,c:20.0}, "нут вареный": {cal:164,p:8.9,f:2.6,c:27.4}, "кукуруза вареная": {cal:96,p:3.4,f:1.5,c:21.0},
-  "зеленый горошек": {cal:81,p:5.4,f:0.4,c:14.5}, "фасоль стручковая": {cal:31,p:1.8,f:0.1,c:7.0}, "соевый сыр тофу": {cal:76,p:8.0,f:4.8,c:1.9}, "соевое молоко": {cal:54,p:3.3,f:1.8,c:6.3}, "хумус": {cal:166,p:7.9,f:9.6,c:14.3},
-  "миндаль": {cal:579,p:21.0,f:50.0,c:22.0}, "грецкий орех": {cal:654,p:15.2,f:65.2,c:13.7}, "фундук": {cal:628,p:15.0,f:61.0,c:17.0}, "кешью": {cal:553,p:18.0,f:44.0,c:30.0}, "арахис": {cal:567,p:25.8,f:49.2,c:16.1},
-  "фисташки": {cal:562,p:20.0,f:45.0,c:28.0}, "семечки подсолнечные": {cal:584,p:20.8,f:51.5,c:20.0}, "семена тыквы": {cal:559,p:30.2,f:49.0,c:10.7}, "семена льна": {cal:534,p:18.3,f:42.2,c:28.9}, "семена чиа": {cal:486,p:16.5,f:30.7,c:42.1},
-  "масло оливковое": {cal:884,p:0.0,f:100.0,c:0.0}, "масло подсолнечное": {cal:884,p:0.0,f:100.0,c:0.0}, "масло кокосовое": {cal:862,p:0.0,f:100.0,c:0.0}, "майонез": {cal:680,p:1.0,f:75.0,c:2.6}, "кетчуп": {cal:112,p:1.7,f:0.2,c:25.8},
-  "горчица": {cal:66,p:4.4,f:4.0,c:5.0}, "соевый соус": {cal:53,p:8.1,f:0.6,c:4.9}, "мед": {cal:304,p:0.3,f:0.0,c:82.4}, "сахар": {cal:387,p:0.0,f:0.0,c:100.0}, "варенье": {cal:260,p:0.3,f:0.1,c:68.0},
-  "шоколад молочный": {cal:535,p:7.7,f:30.0,c:59.0}, "шоколад темный": {cal:546,p:4.9,f:31.0,c:61.0}, "печенье": {cal:450,p:7.0,f:18.0,c:66.0}, "вафли": {cal:520,p:5.5,f:30.0,c:60.0}, "зефир": {cal:326,p:0.8,f:0.1,c:79.8},
-  "мармелад": {cal:321,p:0.1,f:0.0,c:79.4}, "халва": {cal:516,p:12.7,f:29.9,c:50.6}, "торт бисквитный": {cal:350,p:5.0,f:15.0,c:50.0}, "пирожное": {cal:400,p:5.0,f:22.0,c:47.0}, "мюсли": {cal:340,p:9.0,f:5.0,c:66.0},
-  "борщ": {cal:57,p:3.8,f:2.9,c:4.3}, "щи": {cal:35,p:2.0,f:1.5,c:4.0}, "суп куриный": {cal:45,p:4.0,f:2.0,c:3.0}, "суп гороховый": {cal:66,p:4.4,f:2.4,c:8.9}, "окрошка": {cal:60,p:3.5,f:3.0,c:5.0},
-  "плов": {cal:180,p:6.0,f:7.0,c:24.0}, "гречка с курицей": {cal:135,p:9.0,f:3.5,c:17.0}, "макароны с сыром": {cal:220,p:8.0,f:9.0,c:27.0}, "пельмени": {cal:275,p:11.0,f:13.0,c:29.0}, "вареники с картошкой": {cal:185,p:5.0,f:3.0,c:35.0},
-  "котлета куриная": {cal:190,p:17.0,f:10.0,c:8.0}, "котлета мясная": {cal:240,p:15.0,f:17.0,c:8.0}, "голубцы": {cal:143,p:7.0,f:8.0,c:11.0}, "тефтели": {cal:220,p:12.0,f:14.0,c:10.0}, "омлет с сыром": {cal:210,p:14.0,f:16.0,c:2.0},
-  "салат оливье": {cal:198,p:5.0,f:16.0,c:8.0}, "салат винегрет": {cal:130,p:2.0,f:8.0,c:14.0}, "салат цезарь": {cal:190,p:9.0,f:14.0,c:7.0}, "салат греческий": {cal:120,p:4.0,f:9.0,c:6.0}, "пюре картофельное": {cal:90,p:2.0,f:3.0,c:15.0},
-  "картофель жареный": {cal:192,p:2.8,f:9.5,c:23.4}, "картофель фри": {cal:312,p:3.4,f:15.0,c:41.0}, "сырники": {cal:220,p:14.0,f:10.0,c:18.0}, "блины": {cal:227,p:6.0,f:10.0,c:28.0}, "оладьи": {cal:230,p:6.0,f:9.0,c:32.0},
-  "пицца маргарита": {cal:266,p:11.0,f:10.0,c:33.0}, "пицца пепперони": {cal:298,p:12.0,f:14.0,c:31.0}, "бургер": {cal:295,p:17.0,f:14.0,c:24.0}, "шаурма": {cal:210,p:11.0,f:10.0,c:20.0}, "хот-дог": {cal:290,p:10.0,f:17.0,c:24.0},
-  "чай без сахара": {cal:1,p:0.0,f:0.0,c:0.0}, "кофе без сахара": {cal:2,p:0.1,f:0.0,c:0.0}, "капучино": {cal:45,p:2.5,f:2.0,c:4.5}, "латте": {cal:55,p:3.0,f:2.5,c:5.0}, "какао": {cal:77,p:3.5,f:2.3,c:10.0},
-  "сок апельсиновый": {cal:45,p:0.7,f:0.2,c:10.4}, "сок яблочный": {cal:46,p:0.1,f:0.1,c:11.3}, "квас": {cal:27,p:0.2,f:0.0,c:5.2}, "компот": {cal:60,p:0.2,f:0.0,c:15.0}, "лимонад": {cal:40,p:0.0,f:0.0,c:10.0}
-};
-let items = [];
-let selectedName = "";
-function saveDraft(){
-  try {
-    const name = document.getElementById("name")?.value ?? "";
-    const grams = document.getElementById("grams")?.value ?? "";
-    localStorage.setItem(DRAFT_KEY, JSON.stringify({ name, grams, selectedName }));
-  } catch(e) {}
+const LEGACY_COUNTER_STORAGE_KEY = "calorie_counter_items_v1";
+const LEGACY_COUNTER_DRAFT_KEY = "calorie_counter_draft_v1";
+const DIARY_APP_NAME = "Дневник питания";
+const DIARY_KEY = "food_diary_v1";
+const foodDB = Array.isArray(window.foodDB) ? window.foodDB : [];
+let foodNameIndex = null;
+
+function rebuildFoodNameIndex(){
+  foodNameIndex = new Map();
+  foodDB.forEach(food => {
+    if(!food || !food.name) return;
+    foodNameIndex.set(normalize(food.name), food);
+    if(Array.isArray(food.aliases)){
+      food.aliases.forEach(alias => {
+        if(alias) foodNameIndex.set(normalize(alias), food);
+      });
+    }
+  });
 }
-function loadDraft(){
-  try {
-    const raw = localStorage.getItem(DRAFT_KEY);
-    if(!raw) return;
-    const d = JSON.parse(raw);
-    if(!d || typeof d !== "object") return;
-    if(typeof d.name === "string") document.getElementById("name").value = d.name;
-    if(typeof d.grams === "string" || typeof d.grams === "number") document.getElementById("grams").value = String(d.grams);
-    if(typeof d.selectedName === "string") selectedName = d.selectedName;
-  } catch(e) {}
+function getFoodKcal(food){
+  if(!food) return 0;
+  if(typeof food.kcal === "number") return food.kcal;
+  if(typeof food.calories === "number") return food.calories;
+  return 0;
 }
-function normalize(str){ return str.trim().toLowerCase().replace(/ё/g,"е"); }
-function loadItems(){
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return;
-    const parsed = JSON.parse(raw);
-    if(!Array.isArray(parsed)) return;
-    items = parsed.filter(it =>
-      it && typeof it.name === "string" && foodDB[it.name] &&
-      typeof it.grams === "number" && it.grams > 0 &&
-      typeof it.calories === "number" && typeof it.protein === "number" &&
-      typeof it.fat === "number" && typeof it.carbs === "number"
-    );
-  } catch(e) { items = []; }
+function initFoodDB(){
+  rebuildFoodNameIndex();
 }
-function persistItems(){
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch(e) {}
+function getFoodByName(name){
+  if(!name) return null;
+  if(!foodNameIndex) rebuildFoodNameIndex();
+  return foodNameIndex.get(normalize(name)) || null;
+}
+function foodMatchesQuery(food, input){
+  if(!food || !input) return false;
+  const name = normalize(food.name);
+  const aliasNorms = Array.isArray(food.aliases)
+    ? food.aliases.filter(Boolean).map(alias => normalize(alias))
+    : [];
+  const haystacks = [name, ...aliasNorms];
+  if(haystacks.some(h => h.includes(input) || (input.length >= h.length && input.includes(h)))) return true;
+  const tokens = input.split(/\s+/).filter(token => token.length >= 3);
+  if(tokens.length > 1){
+    return tokens.every(token => haystacks.some(h => h.includes(token)));
+  }
+  return false;
+}
+function searchFoods(query, allowedNames){
+  const input = normalize(query);
+  if(!input) return [];
+  let pool = foodDB;
+  if(allowedNames){
+    const allowed = new Set(allowedNames.map(n => normalize(n)));
+    pool = foodDB.filter(food => food && allowed.has(normalize(food.name)));
+  }
+  return pool.filter(food => foodMatchesQuery(food, input)).slice(0, 12);
 }
 function findExactProduct(input){
-  const n = normalize(input);
-  if(!n) return null;
-  return Object.keys(foodDB).find(k => normalize(k) === n) || null;
+  const food = getFoodByName(input);
+  return food ? food.name : null;
 }
-function resolveProductKey(typed){
+
+const MEALS = ["breakfast", "lunch", "snack", "dinner"];
+const MEAL_LABELS = {
+  breakfast: "Завтрак",
+  lunch: "Обед",
+  snack: "Полдник",
+  dinner: "Ужин"
+};
+const SLOTS = ["side", "protein", "vegetables", "butter", "oil", "dessert"];
+const SLOT_LABELS = {
+  side: "Гарнир / Хлеб",
+  protein: "Белок / Молочные продукты",
+  vegetables: "Овощи / Зелень",
+  butter: "Масло сливочное",
+  oil: "Масло растительное",
+  dessert: "Десерт / фрукт / сладкое / напитки"
+};
+const BUTTER_PRODUCTS = ["масло сливочное 72,5%", "масло сливочное 82,5%"];
+const OIL_PRODUCTS = ["масло подсолнечное", "масло оливковое", "масло льняное", "масло кокосовое"];
+const MEAL_TIME_MINUTES = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+let mealHourOptionsHtml = "";
+let mealMinuteOptionsHtml = "";
+
+function getTodayISO(){
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+function createEmptySlots(){
+  const slots = {};
+  SLOTS.forEach(s => { slots[s] = null; });
+  return slots;
+}
+function createEmptyMeal(){
+  return { time: "", slots: createEmptySlots(), entries: [], feeling: "" };
+}
+function calcProductNutrition(key, grams){
+  const food = getFoodByName(key);
+  if(!food) return { name: key, grams, calories: 0, protein: 0, fat: 0, carbs: 0 };
+  const factor = grams / 100;
+  return {
+    name: food.name,
+    grams,
+    calories: Math.round(getFoodKcal(food) * factor),
+    protein: +(food.protein * factor).toFixed(1),
+    fat: +(food.fat * factor).toFixed(1),
+    carbs: +(food.carbs * factor).toFixed(1)
+  };
+}
+function calcManualNutrition(name, grams, per100){
+  const factor = grams / 100;
+  return {
+    name: name.trim(),
+    grams,
+    calories: Math.round(per100.cal * factor),
+    protein: +(per100.p * factor).toFixed(1),
+    fat: +(per100.f * factor).toFixed(1),
+    carbs: +(per100.c * factor).toFixed(1),
+    manual: true
+  };
+}
+function createEmptyDay(date){
+  const meals = {};
+  MEALS.forEach(m => { meals[m] = createEmptyMeal(); });
+  return { date: date || getTodayISO(), meals };
+}
+function calcNutrition(items){
+  let calories = 0, protein = 0, fat = 0, carbs = 0;
+  if(!Array.isArray(items)) return { calories: 0, protein: 0, fat: 0, carbs: 0 };
+  items.forEach(it => {
+    if(!it) return;
+    if(typeof it.calories === "number") calories += it.calories;
+    if(typeof it.protein === "number") protein += it.protein;
+    if(typeof it.fat === "number") fat += it.fat;
+    if(typeof it.carbs === "number") carbs += it.carbs;
+  });
+  return {
+    calories: Math.round(calories),
+    protein: +protein.toFixed(1),
+    fat: +fat.toFixed(1),
+    carbs: +carbs.toFixed(1)
+  };
+}
+
+let diary = { version: 1, days: {} };
+
+function getTodayDate(){
+  return getTodayISO();
+}
+let currentDate = getTodayDate();
+
+function createEmptyDiary(){
+  return { version: 1, days: {} };
+}
+function isValidLegacyItem(it){
+  return it && typeof it.name === "string" && getFoodByName(it.name) &&
+    typeof it.grams === "number" && it.grams > 0 &&
+    typeof it.calories === "number" && typeof it.protein === "number" &&
+    typeof it.fat === "number" && typeof it.carbs === "number";
+}
+function dayHasProducts(day){
+  if(!day || !day.meals) return false;
+  for(const mealId of MEALS){
+    const meal = day.meals[mealId];
+    if(!meal) continue;
+    if(Array.isArray(meal.entries) && meal.entries.length > 0) return true;
+    if(Array.isArray(meal.legacyItems) && meal.legacyItems.length > 0) return true;
+    if(!meal.slots) continue;
+    for(const slotId of SLOTS){
+      if(meal.slots[slotId]) return true;
+    }
+  }
+  return false;
+}
+function loadDiary(){
+  try {
+    const raw = localStorage.getItem(DIARY_KEY);
+    if(!raw){
+      diary = createEmptyDiary();
+      return diary;
+    }
+    const parsed = JSON.parse(raw);
+    if(!parsed || typeof parsed !== "object" || !parsed.days || typeof parsed.days !== "object"){
+      diary = createEmptyDiary();
+      return diary;
+    }
+    diary = { version: parsed.version || 1, days: parsed.days };
+    return diary;
+  } catch(e){
+    diary = createEmptyDiary();
+    return diary;
+  }
+}
+function saveDiary(diaryToSave){
+  try {
+    if(diaryToSave) diary = diaryToSave;
+    localStorage.setItem(DIARY_KEY, JSON.stringify(diary));
+  } catch(e) {}
+}
+function getDay(date){
+  const d = date || currentDate;
+  if(!diary.days) diary.days = {};
+  if(!diary.days[d]) diary.days[d] = createEmptyDay(d);
+  return diary.days[d];
+}
+function saveDay(date, day){
+  const d = date || currentDate;
+  if(!diary.days) diary.days = {};
+  diary.days[d] = day;
+  saveDiary(diary);
+}
+function migrateLegacyItems(){
+  try {
+    const raw = localStorage.getItem(LEGACY_COUNTER_STORAGE_KEY);
+    if(!raw) return;
+    const parsed = JSON.parse(raw);
+    if(!Array.isArray(parsed) || parsed.length === 0) return;
+    const legacyItems = parsed.filter(isValidLegacyItem);
+    if(legacyItems.length === 0) return;
+
+    const today = getTodayDate();
+    const day = getDay(today);
+    if(dayHasProducts(day)) return;
+
+    if(!day.meals.breakfast) day.meals.breakfast = createEmptyMeal();
+    day.meals.breakfast.legacyItems = legacyItems.map(it => ({
+      name: it.name,
+      grams: it.grams,
+      calories: it.calories,
+      protein: it.protein,
+      fat: it.fat,
+      carbs: it.carbs
+    }));
+    saveDay(today, day);
+    try {
+      localStorage.removeItem(LEGACY_COUNTER_STORAGE_KEY);
+      localStorage.removeItem(LEGACY_COUNTER_DRAFT_KEY);
+    } catch(e) {}
+  } catch(e) {}
+}
+const WEEKDAY_NAMES = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+const WEEKDAY_SHORT = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+const MONTH_NAMES_GENITIVE = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+function formatDiaryDate(iso){
+  const parts = iso.split("-").map(Number);
+  if(parts.length !== 3 || parts.some(isNaN)) return iso;
+  const dt = new Date(parts[0], parts[1] - 1, parts[2]);
+  const weekdayShort = WEEKDAY_SHORT[dt.getDay()];
+  const day = dt.getDate();
+  const month = MONTH_NAMES_GENITIVE[dt.getMonth()];
+  const year = dt.getFullYear();
+  const formatted = `${weekdayShort} • ${day} ${month} ${year}`;
+  if(iso === getTodayISO()){
+    return `Сегодня • ${weekdayShort} • ${day} ${month} ${year}`;
+  }
+  return formatted;
+}
+function ensureMealStructure(meal){
+  if(!meal) meal = createEmptyMeal();
+  if(!meal.slots) meal.slots = createEmptySlots();
+  if(!Array.isArray(meal.entries)) meal.entries = [];
+  if(typeof meal.feeling !== "string") meal.feeling = "";
+  if(typeof meal.time !== "string") meal.time = "";
+  return meal;
+}
+function getSlotLabel(slotId){
+  if(slotId === "legacy") return "Перенесено";
+  return SLOT_LABELS[slotId] || slotId;
+}
+function getMealProducts(meal){
+  const products = [];
+  if(!meal) return products;
+  if(Array.isArray(meal.entries)){
+    meal.entries.forEach(it => { if(it && it.name) products.push(it); });
+  }
+  if(meal.slots){
+    SLOTS.forEach(slotId => {
+      if(meal.slots[slotId]) products.push(meal.slots[slotId]);
+    });
+  }
+  if(Array.isArray(meal.legacyItems)) products.push(...meal.legacyItems);
+  return products;
+}
+function getMealEntriesForDisplay(meal){
+  const list = [];
+  if(!meal) return list;
+  ensureMealStructure(meal);
+  meal.entries.forEach((it, i) => {
+    if(it && it.name) list.push({ ...it, _source: "entries", _index: i });
+  });
+  if(Array.isArray(meal.legacyItems)){
+    meal.legacyItems.forEach((it, i) => {
+      if(it && it.name) list.push({ ...it, slot: it.slot || "legacy", _source: "legacyItems", _index: i });
+    });
+  }
+  SLOTS.forEach(slotId => {
+    if(meal.slots && meal.slots[slotId]){
+      list.push({ ...meal.slots[slotId], slot: slotId, _source: "slots", _index: slotId });
+    }
+  });
+  return list;
+}
+function getDayDiaryStats(date){
+  const day = getDay(date);
+  let mealCount = 0;
+  const allProducts = [];
+  MEALS.forEach(mealId => {
+    const meal = day.meals[mealId];
+    const products = getMealProducts(meal);
+    if(products.length > 0) mealCount++;
+    allProducts.push(...products);
+  });
+  return { mealCount, nutrition: calcNutrition(allProducts) };
+}
+function openDiaryDatePicker(){
+  const el = document.getElementById("diaryDate");
+  if(!el) return;
+  if(typeof el.showPicker === "function"){
+    try {
+      el.showPicker();
+      return;
+    } catch(e) {}
+  }
+  el.click();
+}
+function renderDiaryPanel(){
+  const dateInput = document.getElementById("diaryDate");
+  if(dateInput) dateInput.value = currentDate;
+  const formattedDate = formatDiaryDate(currentDate);
+  const cardText = document.getElementById("diaryDateCardText");
+  if(cardText) cardText.textContent = formattedDate;
+  const stats = getDayDiaryStats(currentDate);
+  const n = stats.nutrition;
+  const mealsEl = document.getElementById("diaryMeals");
+  const calEl = document.getElementById("diaryCalories");
+  const protEl = document.getElementById("diaryProtein");
+  const fatEl = document.getElementById("diaryFat");
+  const carbsEl = document.getElementById("diaryCarbs");
+  if(mealsEl) mealsEl.textContent = stats.mealCount;
+  if(calEl) calEl.textContent = n.calories;
+  if(protEl) protEl.textContent = n.protein + " г";
+  if(fatEl) fatEl.textContent = n.fat + " г";
+  if(carbsEl) carbsEl.textContent = n.carbs + " г";
+}
+const mealCardOpenState = {};
+function getCurrentMealByTime(now){
+  const dt = now || new Date();
+  const minutes = dt.getHours() * 60 + dt.getMinutes();
+  if(minutes >= 300 && minutes < 660) return "breakfast";
+  if(minutes >= 660 && minutes < 960) return "lunch";
+  if(minutes >= 960 && minutes < 1110) return "snack";
+  return "dinner";
+}
+function initMealCardOpenState(){
+  const currentMeal = getCurrentMealByTime();
+  MEALS.forEach(mealId => {
+    mealCardOpenState[mealId] = mealId === currentMeal;
+  });
+}
+function isMealCardOpen(mealId){
+  return !!mealCardOpenState[mealId];
+}
+function applyMealCardOpenState(mealId){
+  const card = document.getElementById("meal-" + mealId);
+  if(!card) return;
+  const isOpen = isMealCardOpen(mealId);
+  card.classList.toggle("is-open", isOpen);
+  const header = card.querySelector(".meal-card-header");
+  if(header) header.setAttribute("aria-expanded", isOpen ? "true" : "false");
+}
+function formatProductCountLabel(count){
+  const n = Math.abs(count) % 100;
+  const n1 = n % 10;
+  if(n > 10 && n < 20) return count + " продуктов";
+  if(n1 === 1) return count + " продукт";
+  if(n1 >= 2 && n1 <= 4) return count + " продукта";
+  return count + " продуктов";
+}
+function buildMealCardSummary(mealId, meal){
+  const products = getMealProducts(meal);
+  const totals = calcNutrition(products);
+  const time = (meal.time || "").trim() || "—";
+  const parts = [
+    MEAL_LABELS[mealId],
+    time,
+    formatProductCountLabel(products.length),
+    totals.calories + " ккал"
+  ];
+  if((meal.feeling || "").trim()) parts.push("есть ощущения");
+  return parts.join(" · ");
+}
+function updateMealCardSummary(mealId, meal){
+  const el = document.getElementById("meal-" + mealId + "-summary");
+  if(el) el.textContent = buildMealCardSummary(mealId, meal || getMeal(mealId));
+}
+const MEAL_TOTALS_LABEL = {
+  breakfast: "Итог по завтраку",
+  lunch: "Итог по обеду",
+  snack: "Итог по полднику",
+  dinner: "Итог по ужину"
+};
+const mealUiState = {};
+function initMealUiState(){
+  MEALS.forEach(mealId => {
+    mealUiState[mealId] = { selectedNames: {}, manualOpen: {}, slotFormOpen: {} };
+  });
+}
+function getMealUi(mealId){
+  if(!mealUiState[mealId]) mealUiState[mealId] = { selectedNames: {}, manualOpen: {}, slotFormOpen: {} };
+  return mealUiState[mealId];
+}
+function resetMealFormState(){
+  initMealUiState();
+}
+function resetBreakfastFormState(){
+  resetMealFormState();
+}
+function onDiaryDateChange(){
+  const el = document.getElementById("diaryDate");
+  if(!el || !el.value) return;
+  currentDate = el.value;
+  resetMealFormState();
+  getDay(currentDate);
+  renderAllMealCards();
+  renderDiaryPanel();
+}
+function startNewDay(){
+  currentDate = getTodayDate();
+  resetMealFormState();
+  getDay(currentDate);
+  renderAllMealCards();
+  renderDiaryPanel();
+}
+function clearDiaryDay(){
+  if(!confirm("Очистить день " + formatDiaryDate(currentDate) + "? Данные «" + DIARY_APP_NAME + "» за эту дату будут удалены.")) return;
+  saveDay(currentDate, createEmptyDay(currentDate));
+  resetMealFormState();
+  renderAllMealCards();
+  renderDiaryPanel();
+}
+const DIARY_REPORT_SEPARATOR = "━━━━━━━━━━━━━━";
+const DIARY_REPORT_DAY_SEPARATOR = "════════════════════";
+const MEAL_REPORT_META = {
+  breakfast: { emoji: "🍳", title: "ЗАВТРАК", totalLabel: "ИТОГ ЗАВТРАКА" },
+  lunch: { emoji: "🥗", title: "ОБЕД", totalLabel: "ИТОГ ОБЕДА" },
+  snack: { emoji: "🍎", title: "ПОЛДНИК", totalLabel: "ИТОГ ПОЛДНИКА" },
+  dinner: { emoji: "🌙", title: "УЖИН", totalLabel: "ИТОГ УЖИНА" }
+};
+const SLOT_REPORT_EMOJI = {
+  side: "🍞",
+  protein: "🥩",
+  vegetables: "🥗",
+  butter: "🧈",
+  oil: "🫒",
+  dessert: "🍎",
+  legacy: "📦"
+};
+function formatDiaryReportDate(iso){
+  const parts = iso.split("-").map(Number);
+  if(parts.length !== 3 || parts.some(isNaN)) return iso;
+  const dt = new Date(parts[0], parts[1] - 1, parts[2]);
+  const weekdayUpper = WEEKDAY_SHORT[dt.getDay()].toUpperCase();
+  const day = dt.getDate();
+  const month = MONTH_NAMES_GENITIVE[dt.getMonth()];
+  const year = dt.getFullYear();
+  const datePart = `${weekdayUpper} • ${day} ${month} ${year}`;
+  if(iso === getTodayISO()) return `Сегодня, ${datePart}`;
+  return datePart;
+}
+function formatReportMacroValue(value, isCalories){
+  const n = typeof value === "number" ? value : 0;
+  if(isCalories) return String(Math.round(n));
+  const rounded = +n.toFixed(1);
+  return rounded % 1 === 0 ? String(Math.round(rounded)) : String(rounded);
+}
+function formatDiaryReportMacros(cal, prot, fat, carbs){
+  return [
+    formatReportMacroValue(cal, true) + " ккал",
+    "Б " + formatReportMacroValue(prot, false),
+    "Ж " + formatReportMacroValue(fat, false),
+    "У " + formatReportMacroValue(carbs, false)
+  ].join(" · ");
+}
+function formatDiaryReportProduct(entry){
+  const name = entry.name || "—";
+  const grams = typeof entry.grams === "number" ? entry.grams : 0;
+  const cal = typeof entry.calories === "number" ? entry.calories : 0;
+  const prot = typeof entry.protein === "number" ? entry.protein : 0;
+  const fat = typeof entry.fat === "number" ? entry.fat : 0;
+  const carbs = typeof entry.carbs === "number" ? entry.carbs : 0;
+  return [
+    `• ${name} — ${grams} г`,
+    formatDiaryReportMacros(cal, prot, fat, carbs)
+  ].join("\n");
+}
+function getMealReportSlotOrder(){
+  return SLOTS.concat(["legacy"]);
+}
+function getMealReportSlotLabel(slotId){
+  if(slotId === "legacy") return "Перенесённые продукты";
+  return getMealSlotLabel(slotId);
+}
+function formatMealReportCategory(slotId){
+  const emoji = SLOT_REPORT_EMOJI[slotId] || "•";
+  return `${emoji} ${getMealReportSlotLabel(slotId)}`;
+}
+function formatMealReportHeader(mealId, meal){
+  const meta = MEAL_REPORT_META[mealId] || { emoji: "🍽", title: (MEAL_LABELS[mealId] || mealId).toUpperCase(), totalLabel: "ИТОГ" };
+  const time = (meal.time || "").trim();
+  const title = time ? `${meta.title} — ${time}` : meta.title;
+  return [
+    DIARY_REPORT_SEPARATOR,
+    "",
+    `${meta.emoji} ${title}`,
+    DIARY_REPORT_SEPARATOR,
+    ""
+  ].join("\n");
+}
+function buildMealReportSection(mealId, meal){
+  const products = getMealProducts(meal);
+  if(!products.length) return "";
+  const meta = MEAL_REPORT_META[mealId] || { totalLabel: "ИТОГ" };
+  const lines = [formatMealReportHeader(mealId, meal)];
+  const grouped = {};
+  getMealEntriesForDisplay(meal).forEach(entry => {
+    const slot = entry.slot || "legacy";
+    if(!grouped[slot]) grouped[slot] = [];
+    grouped[slot].push(entry);
+  });
+  getMealReportSlotOrder().forEach(slotId => {
+    const items = grouped[slotId];
+    if(!items || !items.length) return;
+    lines.push(formatMealReportCategory(slotId));
+    lines.push("");
+    items.forEach(entry => lines.push(formatDiaryReportProduct(entry)));
+    lines.push("");
+  });
+  const feeling = (meal.feeling || "").trim();
+  if(feeling){
+    lines.push("📝 ОЩУЩЕНИЯ ПОСЛЕ ЕДЫ");
+    lines.push("");
+    lines.push(feeling);
+    lines.push("");
+    lines.push("");
+  } else {
+    lines.push("");
+  }
+  const totals = calcNutrition(products);
+  lines.push(`✅ ${meta.totalLabel}`);
+  lines.push("");
+  lines.push(formatDiaryReportMacros(totals.calories, totals.protein, totals.fat, totals.carbs));
+  return lines.join("\n");
+}
+function buildDiaryReportText(date){
+  const day = getDay(date);
+  const mealSections = [];
+  MEALS.forEach(mealId => {
+    const meal = ensureMealStructure(day.meals[mealId] || createEmptyMeal());
+    const section = buildMealReportSection(mealId, meal);
+    if(section) mealSections.push(section);
+  });
+  const dayStats = getDayDiaryStats(date);
+  const n = dayStats.nutrition;
+  const lines = [
+    "📒 ЭЛЕКТРОННЫЙ ДНЕВНИК ПИТАНИЯ",
+    "📅 " + formatDiaryReportDate(date),
+    ""
+  ];
+  if(mealSections.length) lines.push(mealSections.join("\n\n"));
+  if(mealSections.length){
+    lines.push("");
+    lines.push("");
+    lines.push("");
+  }
+  lines.push(DIARY_REPORT_DAY_SEPARATOR);
+  lines.push("");
+  lines.push("📊 ИТОГО ЗА ДЕНЬ");
+  lines.push("");
+  lines.push(`Калории: ${n.calories} ккал`);
+  lines.push(`Белки: ${n.protein} г`);
+  lines.push(`Жиры: ${n.fat} г`);
+  lines.push(`Углеводы: ${n.carbs} г`);
+  lines.push("");
+  lines.push(DIARY_REPORT_DAY_SEPARATOR);
+  lines.push("");
+  return lines.join("\n");
+}
+let copyDiaryToastTimer = null;
+let pendingShareDiaryText = "";
+const SHARE_DIARY_MANUAL_HINT_DEFAULT = "Браузер не разрешил автоматическое копирование. Выделите отчёт и скопируйте вручную (Ctrl+C).";
+function prepareShareDiaryText(){
+  MEALS.forEach(mealId => {
+    const el = document.getElementById("meal-" + mealId + "-feeling");
+    if(el && document.activeElement === el) saveMealFeeling(mealId);
+  });
+  const generatedDiaryText = buildDiaryReportText(currentDate);
+  pendingShareDiaryText = generatedDiaryText;
+  return generatedDiaryText;
+}
+let telegramFallbackTimer = null;
+let telegramFallbackOnBlur = null;
+let telegramFallbackOnVisibility = null;
+let telegramFallbackOnPagehide = null;
+function clearTelegramFallbackTimer(){
+  if(telegramFallbackTimer){
+    clearTimeout(telegramFallbackTimer);
+    telegramFallbackTimer = null;
+  }
+}
+function removeTelegramFallbackListeners(){
+  if(telegramFallbackOnBlur){
+    window.removeEventListener("blur", telegramFallbackOnBlur);
+    telegramFallbackOnBlur = null;
+  }
+  if(telegramFallbackOnVisibility){
+    document.removeEventListener("visibilitychange", telegramFallbackOnVisibility);
+    telegramFallbackOnVisibility = null;
+  }
+  if(telegramFallbackOnPagehide){
+    window.removeEventListener("pagehide", telegramFallbackOnPagehide);
+    telegramFallbackOnPagehide = null;
+  }
+}
+function stopTelegramAppFallback(){
+  clearTelegramFallbackTimer();
+  removeTelegramFallbackListeners();
+}
+function openTelegramDeepLink(){
+  try {
+    const link = document.createElement("a");
+    link.href = "tg://msg";
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch(e) {}
+}
+function openTelegramAppWithFallback(){
+  stopTelegramAppFallback();
+  const cancelFallback = () => stopTelegramAppFallback();
+  telegramFallbackOnBlur = cancelFallback;
+  telegramFallbackOnVisibility = () => {
+    if(document.hidden) cancelFallback();
+  };
+  telegramFallbackOnPagehide = cancelFallback;
+  window.addEventListener("blur", telegramFallbackOnBlur);
+  document.addEventListener("visibilitychange", telegramFallbackOnVisibility);
+  window.addEventListener("pagehide", telegramFallbackOnPagehide);
+  telegramFallbackTimer = setTimeout(() => {
+    stopTelegramAppFallback();
+    window.open("https://web.telegram.org/", "_blank", "noopener,noreferrer");
+    showCopyDiaryToast("Отчёт скопирован. Вставьте его в нужный чат Telegram.");
+  }, 1200);
+  openTelegramDeepLink();
+}
+function showCopyDiaryToast(message){
+  const toast = document.getElementById("copyDiaryToast");
+  if(!toast) return;
+  toast.textContent = message;
+  toast.classList.add("is-visible");
+  if(copyDiaryToastTimer) clearTimeout(copyDiaryToastTimer);
+  copyDiaryToastTimer = setTimeout(() => {
+    toast.classList.remove("is-visible");
+    copyDiaryToastTimer = null;
+  }, 4500);
+}
+function hideShareDiaryManualCopy(){
+  const block = document.getElementById("shareDiaryManual");
+  if(block) block.classList.remove("is-visible");
+}
+function resetShareDiaryManualHint(){
+  const hintEl = document.querySelector(".share-diary-manual-hint");
+  if(hintEl) hintEl.textContent = SHARE_DIARY_MANUAL_HINT_DEFAULT;
+}
+function showShareDiaryManualCopy(text, hint){
+  const block = document.getElementById("shareDiaryManual");
+  const area = document.getElementById("shareDiaryManualText");
+  const hintEl = document.querySelector(".share-diary-manual-hint");
+  if(!block || !area) return;
+  area.value = text;
+  if(hintEl) hintEl.textContent = hint || SHARE_DIARY_MANUAL_HINT_DEFAULT;
+  block.classList.add("is-visible");
+}
+function selectShareDiaryManualText(){
+  const area = document.getElementById("shareDiaryManualText");
+  if(!area) return;
+  area.focus();
+  area.select();
+}
+function writeShareDiaryToClipboardSync(text){
+  if(!text) return false;
+  try {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0;";
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    area.setSelectionRange(0, text.length);
+    const copied = document.execCommand("copy");
+    document.body.removeChild(area);
+    return copied;
+  } catch(e) {
+    return false;
+  }
+}
+async function writeShareDiaryToClipboard(text){
+  if(!text) return false;
+  if(writeShareDiaryToClipboardSync(text)) return true;
+  if(navigator.clipboard && typeof navigator.clipboard.writeText === "function"){
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch(e) {}
+  }
+  return writeShareDiaryToClipboardSync(text);
+}
+function openShareDiaryModal(){
+  stopTelegramAppFallback();
+  hideShareDiaryManualCopy();
+  resetShareDiaryManualHint();
+  const modal = document.getElementById("shareDiaryModal");
+  if(modal) modal.classList.add("is-open");
+}
+function closeShareDiaryModal(){
+  stopTelegramAppFallback();
+  hideShareDiaryManualCopy();
+  const modal = document.getElementById("shareDiaryModal");
+  if(modal) modal.classList.remove("is-open");
+}
+async function copyShareDiaryReport(){
+  const generatedDiaryText = prepareShareDiaryText();
+  if(!generatedDiaryText) return;
+  hideShareDiaryManualCopy();
+  resetShareDiaryManualHint();
+  if(await writeShareDiaryToClipboard(generatedDiaryText)){
+    showCopyDiaryToast("Отчёт скопирован. Теперь его можно вставить в Telegram или MAX.");
+    return;
+  }
+  showShareDiaryManualCopy(generatedDiaryText);
+}
+function shareDiaryToTelegram(){
+  const generatedDiaryText = prepareShareDiaryText();
+  if(!generatedDiaryText) return;
+  hideShareDiaryManualCopy();
+  resetShareDiaryManualHint();
+  if(writeShareDiaryToClipboardSync(generatedDiaryText)){
+    showCopyDiaryToast("Отчёт скопирован. Выберите чат в Telegram и вставьте текст.");
+    openTelegramAppWithFallback();
+    return;
+  }
+  showShareDiaryManualCopy(generatedDiaryText, "Скопируйте отчёт вручную и вставьте его в Telegram.");
+}
+function shareDiaryToMax(){
+  const generatedDiaryText = prepareShareDiaryText();
+  if(!generatedDiaryText) return;
+  hideShareDiaryManualCopy();
+  resetShareDiaryManualHint();
+  if(writeShareDiaryToClipboardSync(generatedDiaryText)){
+    showCopyDiaryToast("Отчёт скопирован. Выберите чат в MAX и вставьте текст.");
+    window.open("https://max.ru/", "_blank", "noopener,noreferrer");
+    return;
+  }
+  showShareDiaryManualCopy(generatedDiaryText, "Скопируйте отчёт вручную и вставьте его в MAX.");
+}
+function copyDiaryReport(){
+  prepareShareDiaryText();
+  openShareDiaryModal();
+}
+function toggleMealCard(mealId){
+  mealCardOpenState[mealId] = !isMealCardOpen(mealId);
+  applyMealCardOpenState(mealId);
+}
+function getMeal(mealId){
+  const day = getDay(currentDate);
+  day.meals[mealId] = ensureMealStructure(day.meals[mealId] || createEmptyMeal());
+  return day.meals[mealId];
+}
+function getBreakfastMeal(){
+  return getMeal("breakfast");
+}
+function persistMeal(mealId, meal){
+  const day = getDay(currentDate);
+  day.meals[mealId] = meal;
+  saveDay(currentDate, day);
+}
+function persistBreakfastMeal(meal){
+  persistMeal("breakfast", meal);
+}
+function resolveDiaryProductKey(typed, selected){
   const t = normalize(typed);
-  if(selectedName && foodDB[selectedName] && normalize(selectedName) === t) return selectedName;
+  const selectedFood = getFoodByName(selected);
+  if(selectedFood && normalize(selectedFood.name) === t) return selectedFood.name;
   return findExactProduct(typed);
 }
-function showSuggestions(){
-  const input = normalize(document.getElementById("name").value);
-  const box = document.getElementById("suggestions");
-  const nf = document.getElementById("notfound");
-  box.innerHTML = ""; nf.textContent = ""; selectedName = "";
-  saveDraft();
+function getMealSlotLabel(slotId){
+  return SLOT_LABELS[slotId] || slotId;
+}
+function getBreakfastSlotLabel(slotId){
+  return getMealSlotLabel(slotId);
+}
+function getMealSearchKeys(slotId, input){
+  if(!input) return [];
+  let allowedNames = null;
+  if(slotId === "butter") allowedNames = BUTTER_PRODUCTS;
+  else if(slotId === "oil") allowedNames = OIL_PRODUCTS;
+  return searchFoods(input, allowedNames).map(food => food.name);
+}
+function getBreakfastSearchKeys(slotId, input){
+  return getMealSearchKeys(slotId, input);
+}
+function isProductAllowedInSlot(key, slotId){
+  if(slotId === "butter") return BUTTER_PRODUCTS.includes(key);
+  if(slotId === "oil") return OIL_PRODUCTS.includes(key);
+  return true;
+}
+function getMealSlotPlaceholder(slotId){
+  if(slotId === "butter") return "72,5% или 82,5%...";
+  if(slotId === "oil") return "подсолнечное, оливковое, льняное...";
+  return "Начни писать продукт...";
+}
+function getBreakfastSlotPlaceholder(slotId){
+  return getMealSlotPlaceholder(slotId);
+}
+function mealElId(mealId, slotId, suffix){
+  return mealId + "-" + slotId + suffix;
+}
+function getSlotEntries(meal, slotId){
+  if(!meal || !Array.isArray(meal.entries)) return [];
+  return meal.entries.filter(it => it && it.slot === slotId);
+}
+function hideMealManualUi(mealId, slotId){
+  const ui = getMealUi(mealId);
+  const notice = document.getElementById(mealElId(mealId, slotId, "-manual-notice"));
+  const panel = document.getElementById(mealElId(mealId, slotId, "-manual-panel"));
+  if(notice) notice.style.display = "none";
+  if(panel) panel.style.display = "none";
+  ui.manualOpen[slotId] = false;
+}
+function hideBreakfastManualUi(slotId){
+  hideMealManualUi("breakfast", slotId);
+}
+function clearMealManualFields(mealId, slotId){
+  ["-manual-name", "-manual-grams", "-manual-cal", "-manual-p", "-manual-f", "-manual-c"].forEach(suffix => {
+    const el = document.getElementById(mealElId(mealId, slotId, suffix));
+    if(el) el.value = "";
+  });
+  const err = document.getElementById(mealElId(mealId, slotId, "-manual-error"));
+  if(err) err.textContent = "";
+}
+function clearBreakfastManualFields(slotId){
+  clearMealManualFields("breakfast", slotId);
+}
+function getMealSlotManualHint(slotId){
+  if(slotId === "butter" || slotId === "oil"){
+    return "Выберите продукт из подсказки или добавьте вручную.";
+  }
+  return "";
+}
+function showMealManualNotice(mealId, slotId){
+  const notice = document.getElementById(mealElId(mealId, slotId, "-manual-notice"));
+  const nf = document.getElementById(mealElId(mealId, slotId, "-notfound"));
+  const hint = getMealSlotManualHint(slotId);
+  if(nf && hint) nf.textContent = hint;
+  if(notice) notice.style.display = "block";
+}
+function showBreakfastManualNotice(slotId){
+  showMealManualNotice("breakfast", slotId);
+}
+function openMealManual(mealId, slotId){
+  const ui = getMealUi(mealId);
+  ui.manualOpen[slotId] = true;
+  ui.slotFormOpen[slotId] = true;
+  const notice = document.getElementById(mealElId(mealId, slotId, "-manual-notice"));
+  const panel = document.getElementById(mealElId(mealId, slotId, "-manual-panel"));
+  const searchForm = document.getElementById(mealElId(mealId, slotId, "-search-form"));
+  const formWrap = document.getElementById(mealElId(mealId, slotId, "-form"));
+  const typed = document.getElementById(mealElId(mealId, slotId, "-product"))?.value || "";
+  const grams = document.getElementById(mealElId(mealId, slotId, "-grams"))?.value || "";
+  const nameEl = document.getElementById(mealElId(mealId, slotId, "-manual-name"));
+  const gramsEl = document.getElementById(mealElId(mealId, slotId, "-manual-grams"));
+  if(notice) notice.style.display = "none";
+  if(panel) panel.style.display = "block";
+  if(searchForm) searchForm.style.display = "none";
+  if(formWrap) formWrap.style.display = "block";
+  if(nameEl) nameEl.value = typed.trim();
+  if(gramsEl) gramsEl.value = grams;
+  const addMore = document.getElementById(mealElId(mealId, slotId, "-addmore"));
+  if(addMore) addMore.style.display = "none";
+  const err = document.getElementById(mealElId(mealId, slotId, "-manual-error"));
+  if(err) err.textContent = "";
+  nameEl?.focus();
+}
+function openBreakfastManual(slotId){
+  openMealManual("breakfast", slotId);
+}
+function closeMealManual(mealId, slotId){
+  hideMealManualUi(mealId, slotId);
+  clearMealManualFields(mealId, slotId);
+  const searchForm = document.getElementById(mealElId(mealId, slotId, "-search-form"));
+  if(searchForm) searchForm.style.display = "block";
+  const meal = getMeal(mealId);
+  const ui = getMealUi(mealId);
+  const hasEntries = getSlotEntries(meal, slotId).length > 0;
+  if(hasEntries && !ui.slotFormOpen[slotId]){
+    const formWrap = document.getElementById(mealElId(mealId, slotId, "-form"));
+    if(formWrap) formWrap.style.display = "none";
+  }
+  renderMealSlotRow(mealId, meal, slotId);
+}
+function closeBreakfastManual(slotId){
+  closeMealManual("breakfast", slotId);
+}
+function cancelMealSlotForm(mealId, slotId){
+  getMealUi(mealId).slotFormOpen[slotId] = false;
+  clearMealSlotForm(mealId, slotId);
+  renderMealCard(mealId);
+}
+function cancelBreakfastSlotForm(slotId){
+  cancelMealSlotForm("breakfast", slotId);
+}
+function showMealSlotForm(mealId, slotId){
+  getMealUi(mealId).slotFormOpen[slotId] = true;
+  const formWrap = document.getElementById(mealElId(mealId, slotId, "-form"));
+  const addMore = document.getElementById(mealElId(mealId, slotId, "-addmore"));
+  if(formWrap) formWrap.style.display = "block";
+  if(addMore) addMore.style.display = "none";
+  document.getElementById(mealElId(mealId, slotId, "-product"))?.focus();
+}
+function showBreakfastSlotForm(slotId){
+  showMealSlotForm("breakfast", slotId);
+}
+function clearMealSlotForm(mealId, slotId){
+  const prod = document.getElementById(mealElId(mealId, slotId, "-product"));
+  const gr = document.getElementById(mealElId(mealId, slotId, "-grams"));
+  const box = document.getElementById(mealElId(mealId, slotId, "-suggestions"));
+  const nf = document.getElementById(mealElId(mealId, slotId, "-notfound"));
+  if(prod) prod.value = "";
+  if(gr) gr.value = "";
+  if(box) box.innerHTML = "";
+  if(nf) nf.textContent = "";
+  getMealUi(mealId).selectedNames[slotId] = "";
+  closeMealManual(mealId, slotId);
+}
+function clearBreakfastSlotForm(slotId){
+  clearMealSlotForm("breakfast", slotId);
+}
+function pushMealEntry(mealId, slotId, entry){
+  const meal = getMeal(mealId);
+  meal.entries.push({ ...entry, slot: slotId });
+  persistMeal(mealId, meal);
+  getMealUi(mealId).slotFormOpen[slotId] = false;
+  clearMealSlotForm(mealId, slotId);
+  renderMealCard(mealId);
+  renderDiaryPanel();
+}
+function pushBreakfastEntry(slotId, entry){
+  pushMealEntry("breakfast", slotId, entry);
+}
+function showMealSuggestions(mealId, slotId){
+  const ui = getMealUi(mealId);
+  const raw = document.getElementById(mealElId(mealId, slotId, "-product"))?.value || "";
+  const input = normalize(raw);
+  const box = document.getElementById(mealElId(mealId, slotId, "-suggestions"));
+  const nf = document.getElementById(mealElId(mealId, slotId, "-notfound"));
+  if(!box || !nf) return;
+  box.innerHTML = "";
+  nf.textContent = "";
+  hideMealManualUi(mealId, slotId);
+  ui.selectedNames[slotId] = "";
   if(input.length < 1) return;
-  const keys = Object.keys(foodDB);
-  const matches = keys.filter(k => normalize(k).includes(input)).slice(0, 12);
-  if(matches.length === 0){ nf.textContent = "Пока нет в базе. Можно добавить этот продукт в foodDB в коде."; return; }
+  const matches = getMealSearchKeys(slotId, input);
+  if(matches.length === 0){
+    showMealManualNotice(mealId, slotId);
+    return;
+  }
   matches.forEach(name => {
-    const d = foodDB[name];
+    const food = getFoodByName(name);
+    if(!food) return;
     const div = document.createElement("div");
     div.className = "suggestion";
-    div.innerHTML = `<strong>${name}</strong><small>${d.cal} ккал · Б ${d.p} · Ж ${d.f} · У ${d.c} / 100 г</small>`;
-    div.onclick = () => selectProduct(name);
+    div.innerHTML = `<strong>${food.name}</strong><small>${getFoodKcal(food)} ккал · Б ${food.protein} · Ж ${food.fat} · У ${food.carbs} / 100 г</small>`;
+    div.onclick = () => selectMealProduct(mealId, slotId, food.name);
     box.appendChild(div);
   });
 }
-function selectProduct(name){
-  selectedName = name;
-  document.getElementById("name").value = name;
-  document.getElementById("suggestions").innerHTML = "";
-  document.getElementById("notfound").textContent = "";
-  saveDraft();
-  document.getElementById("grams").focus();
+function showBreakfastSuggestions(slotId){
+  showMealSuggestions("breakfast", slotId);
 }
-function addItem(){
-  const nf = document.getElementById("notfound");
-  const typed = document.getElementById("name").value;
-  const grams = Number(document.getElementById("grams").value);
+function selectMealProduct(mealId, slotId, name){
+  getMealUi(mealId).selectedNames[slotId] = name;
+  const input = document.getElementById(mealElId(mealId, slotId, "-product"));
+  const box = document.getElementById(mealElId(mealId, slotId, "-suggestions"));
+  const nf = document.getElementById(mealElId(mealId, slotId, "-notfound"));
+  if(input) input.value = name;
+  if(box) box.innerHTML = "";
+  if(nf) nf.textContent = "";
+  hideMealManualUi(mealId, slotId);
+  document.getElementById(mealElId(mealId, slotId, "-grams"))?.focus();
+}
+function selectBreakfastProduct(slotId, name){
+  selectMealProduct("breakfast", slotId, name);
+}
+function addMealManualEntry(mealId, slotId){
+  const err = document.getElementById(mealElId(mealId, slotId, "-manual-error"));
+  const typed = (document.getElementById(mealElId(mealId, slotId, "-manual-name"))?.value || "").trim();
+  const grams = Number(document.getElementById(mealElId(mealId, slotId, "-manual-grams"))?.value);
+  const calEl = document.getElementById(mealElId(mealId, slotId, "-manual-cal"));
+  const pEl = document.getElementById(mealElId(mealId, slotId, "-manual-p"));
+  const fEl = document.getElementById(mealElId(mealId, slotId, "-manual-f"));
+  const cEl = document.getElementById(mealElId(mealId, slotId, "-manual-c"));
+  const cal = calEl?.value === "" ? null : Number(calEl?.value);
+  const p = pEl?.value === "" ? null : Number(pEl?.value);
+  const f = fEl?.value === "" ? null : Number(fEl?.value);
+  const c = cEl?.value === "" ? null : Number(cEl?.value);
+  if(err) err.textContent = "";
+  if(!typed){
+    if(err) err.textContent = "Введи название продукта.";
+    return;
+  }
+  if(!grams || grams <= 0){
+    if(err) err.textContent = "Укажи количество граммов больше нуля.";
+    return;
+  }
+  if(cal === null || p === null || f === null || c === null || cal < 0 || p < 0 || f < 0 || c < 0){
+    if(err) err.textContent = "Заполни КБЖУ на 100 г (можно 0, если нет).";
+    return;
+  }
+  pushMealEntry(mealId, slotId, calcManualNutrition(typed, grams, { cal, p, f, c }));
+}
+function addBreakfastManualEntry(slotId){
+  addMealManualEntry("breakfast", slotId);
+}
+function addMealEntry(mealId, slotId){
+  const ui = getMealUi(mealId);
+  const nf = document.getElementById(mealElId(mealId, slotId, "-notfound"));
+  const typed = document.getElementById(mealElId(mealId, slotId, "-product"))?.value || "";
+  const grams = Number(document.getElementById(mealElId(mealId, slotId, "-grams"))?.value);
+  if(!nf) return;
+  if(ui.manualOpen[slotId]) return;
   nf.textContent = "";
-  saveDraft();
   if(!grams || grams <= 0){
     nf.textContent = "Укажи количество граммов больше нуля.";
     return;
   }
-  const key = resolveProductKey(typed);
+  const key = resolveDiaryProductKey(typed, ui.selectedNames[slotId]);
   if(!key){
-    nf.textContent = "Точного совпадения с базой нет. Начни вводить название и выбери продукт из подсказки или введи его точно, как в списке.";
+    showMealManualNotice(mealId, slotId);
     return;
   }
-  const d = foodDB[key];
-  const factor = grams / 100;
-  items.push({
-    name: key, grams,
-    calories: Math.round(d.cal * factor),
-    protein: +(d.p * factor).toFixed(1),
-    fat: +(d.f * factor).toFixed(1),
-    carbs: +(d.c * factor).toFixed(1)
+  if(!isProductAllowedInSlot(key, slotId)){
+    showMealManualNotice(mealId, slotId);
+    return;
+  }
+  pushMealEntry(mealId, slotId, calcProductNutrition(key, grams));
+}
+function addBreakfastEntry(slotId){
+  addMealEntry("breakfast", slotId);
+}
+function deleteMealSlotEntry(mealId, slotId, entryIndex){
+  const meal = getMeal(mealId);
+  const ui = getMealUi(mealId);
+  let count = 0;
+  const idx = meal.entries.findIndex(it => {
+    if(!it || it.slot !== slotId) return false;
+    if(count === entryIndex) return true;
+    count++;
+    return false;
   });
-  document.getElementById("name").value = "";
-  document.getElementById("grams").value = "";
-  selectedName = "";
-  document.getElementById("suggestions").innerHTML = "";
-  nf.textContent = "";
-  saveDraft();
-  render();
+  if(idx < 0) return;
+  meal.entries.splice(idx, 1);
+  persistMeal(mealId, meal);
+  if(getSlotEntries(meal, slotId).length === 0) ui.slotFormOpen[slotId] = true;
+  renderMealCard(mealId);
+  renderDiaryPanel();
 }
-function deleteItem(i){ items.splice(i, 1); render(); }
-function clearAll(){
-  if(!confirm("Очистить весь список? Данные будут удалены из сохранения.")) return;
-  items = [];
-  try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
-  render();
+function deleteBreakfastSlotEntry(slotId, entryIndex){
+  deleteMealSlotEntry("breakfast", slotId, entryIndex);
 }
-function handleEnter(e){ if(e.key === "Enter") addItem(); }
-function render(){
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-  let tc = 0, tp = 0, tf = 0, tcar = 0;
-  items.forEach((it, i) => {
-    tc += it.calories; tp += it.protein; tf += it.fat; tcar += it.carbs;
+function deleteMealLegacyEntry(mealId, entryIndex){
+  const meal = getMeal(mealId);
+  if(!Array.isArray(meal.legacyItems)) return;
+  meal.legacyItems.splice(entryIndex, 1);
+  persistMeal(mealId, meal);
+  renderMealCard(mealId);
+  renderDiaryPanel();
+}
+function deleteBreakfastLegacyEntry(entryIndex){
+  deleteMealLegacyEntry("breakfast", entryIndex);
+}
+function renderMealSlotRow(mealId, meal, slotId){
+  const ui = getMealUi(mealId);
+  const row = document.getElementById(mealId + "-slot-row-" + slotId);
+  if(!row) return;
+  const slotEntries = getSlotEntries(meal, slotId);
+  const hasEntries = slotEntries.length > 0;
+  row.classList.toggle("is-filled", hasEntries);
+  const check = document.getElementById(mealElId(mealId, slotId, "-check"));
+  const status = document.getElementById(mealElId(mealId, slotId, "-status"));
+  const addMore = document.getElementById(mealElId(mealId, slotId, "-addmore"));
+  const formWrap = document.getElementById(mealElId(mealId, slotId, "-form"));
+  const formHeader = document.getElementById(mealElId(mealId, slotId, "-form-header"));
+  const searchForm = document.getElementById(mealElId(mealId, slotId, "-search-form"));
+  const manualPanel = document.getElementById(mealElId(mealId, slotId, "-manual-panel"));
+  const itemsBox = document.getElementById(mealElId(mealId, slotId, "-items"));
+  if(check) check.textContent = hasEntries ? "✅" : "";
+  if(status) status.textContent = hasEntries ? "Заполнено" : "";
+  const showForm = !hasEntries || ui.slotFormOpen[slotId] || ui.manualOpen[slotId];
+  const showCancel = hasEntries && ui.slotFormOpen[slotId] && !ui.manualOpen[slotId];
+  if(formWrap) formWrap.style.display = showForm ? "block" : "none";
+  if(formHeader) formHeader.style.display = showCancel ? "flex" : "none";
+  if(searchForm) searchForm.style.display = ui.manualOpen[slotId] ? "none" : "block";
+  if(manualPanel) manualPanel.style.display = ui.manualOpen[slotId] ? "block" : "none";
+  if(addMore) addMore.style.display = hasEntries && !showForm ? "inline-block" : "none";
+  if(itemsBox){
+    itemsBox.innerHTML = "";
+    itemsBox.style.display = hasEntries ? "block" : "none";
+    slotEntries.forEach((it, i) => {
+      const div = document.createElement("div");
+      div.className = "breakfast-slot-item";
+      const manualTag = it.manual ? " · вручную" : "";
+      div.innerHTML = `<div><b>${it.name}</b>${manualTag} · ${it.grams} г<div class="breakfast-slot-item-meta">${it.calories} ккал · Белки ${it.protein} г · Жиры ${it.fat} г · Углеводы ${it.carbs} г</div></div><button type="button" class="delete" onclick="deleteMealSlotEntry('${mealId}', '${slotId}', ${i})" title="Удалить" aria-label="Удалить">✕</button>`;
+      itemsBox.appendChild(div);
+    });
+  }
+}
+function renderBreakfastSlotRow(meal, slotId){
+  renderMealSlotRow("breakfast", meal, slotId);
+}
+function renderMealLegacyBlock(mealId, meal){
+  const block = document.getElementById(mealId + "-legacy-block");
+  if(!block) return;
+  const legacy = Array.isArray(meal.legacyItems) ? meal.legacyItems : [];
+  if(legacy.length === 0){
+    block.style.display = "none";
+    block.innerHTML = "";
+    return;
+  }
+  block.style.display = "block";
+  block.innerHTML = `<div class="breakfast-legacy-title">Перенесённые продукты</div>`;
+  legacy.forEach((it, i) => {
     const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `<div><b>${it.name}</b> — ${it.grams} г<div class="meta">${it.calories} ккал · Белки ${it.protein} г · Жиры ${it.fat} г · Углеводы ${it.carbs} г</div></div><button type="button" class="delete" onclick="deleteItem(${i})" title="Удалить" aria-label="Удалить из списка">✕</button>`;
-    list.appendChild(div);
+    div.className = "breakfast-slot-item";
+    div.innerHTML = `<div><b>${it.name}</b> · ${it.grams} г<div class="breakfast-slot-item-meta">${it.calories} ккал · Белки ${it.protein} г · Жиры ${it.fat} г · Углеводы ${it.carbs} г</div></div><button type="button" class="delete" onclick="deleteMealLegacyEntry('${mealId}', ${i})" title="Удалить" aria-label="Удалить">✕</button>`;
+    block.appendChild(div);
   });
-  if(items.length === 0) list.innerHTML = "<div class=\"empty\">Пока ничего не добавлено. Начни с огурца — он парень скромный, но полезный.</div>";
-  document.getElementById("totalItems").textContent = items.length;
-  document.getElementById("totalCalories").textContent = Math.round(tc);
-  document.getElementById("totalProtein").textContent = tp.toFixed(1) + " г";
-  document.getElementById("totalFat").textContent = tf.toFixed(1) + " г";
-  document.getElementById("totalCarbs").textContent = tcar.toFixed(1) + " г";
-  persistItems();
 }
-loadItems();
-loadDraft();
-document.getElementById("name").addEventListener("input", saveDraft);
-document.getElementById("grams").addEventListener("input", saveDraft);
-render();
+function renderBreakfastLegacyBlock(meal){
+  renderMealLegacyBlock("breakfast", meal);
+}
+function renderMealSlots(mealId, meal){
+  SLOTS.forEach(slotId => renderMealSlotRow(mealId, meal, slotId));
+  renderMealLegacyBlock(mealId, meal);
+}
+function renderBreakfastSlots(meal){
+  renderMealSlots("breakfast", meal);
+}
+function getMealHourOptionsHtml(){
+  if(mealHourOptionsHtml) return mealHourOptionsHtml;
+  let html = '<option value="">—</option>';
+  for(let h = 0; h < 24; h++){
+    const v = String(h).padStart(2, "0");
+    html += `<option value="${v}">${v}</option>`;
+  }
+  mealHourOptionsHtml = html;
+  return mealHourOptionsHtml;
+}
+function getMealMinuteOptionsHtml(){
+  if(mealMinuteOptionsHtml) return mealMinuteOptionsHtml;
+  let html = '<option value="">—</option>';
+  MEAL_TIME_MINUTES.forEach(v => { html += `<option value="${v}">${v}</option>`; });
+  mealMinuteOptionsHtml = html;
+  return mealMinuteOptionsHtml;
+}
+function snapToMealMinute(min){
+  const n = parseInt(min, 10);
+  if(isNaN(n)) return "00";
+  const snapped = Math.round(n / 5) * 5;
+  const clamped = Math.min(55, Math.max(0, snapped));
+  return String(clamped).padStart(2, "0");
+}
+function parseMealTime(timeStr){
+  if(!timeStr || typeof timeStr !== "string") return { hour: "", minute: "" };
+  const m = timeStr.match(/^(\d{1,2}):(\d{2})$/);
+  if(!m) return { hour: "", minute: "" };
+  const hourNum = parseInt(m[1], 10);
+  if(isNaN(hourNum) || hourNum < 0 || hourNum > 23) return { hour: "", minute: "" };
+  return {
+    hour: String(hourNum).padStart(2, "0"),
+    minute: snapToMealMinute(m[2])
+  };
+}
+function formatMealTime(hour, minute){
+  return `${hour}:${minute}`;
+}
+function updateMealTimeDisplay(mealId, hour, minute){
+  const display = document.getElementById("meal-" + mealId + "-time-display");
+  if(!display) return;
+  if(hour && minute){
+    display.textContent = formatMealTime(hour, minute);
+    display.classList.remove("is-empty");
+  } else {
+    display.textContent = "—";
+    display.classList.add("is-empty");
+  }
+}
+function onMealTimeChange(mealId){
+  const hourEl = document.getElementById("meal-" + mealId + "-hour");
+  const minEl = document.getElementById("meal-" + mealId + "-minute");
+  if(!hourEl || !minEl) return;
+  let hour = hourEl.value;
+  let minute = minEl.value;
+  if(hour && !minute){
+    minEl.value = "00";
+    minute = "00";
+  }
+  if(!hour){
+    minEl.value = "";
+    minute = "";
+  }
+  updateMealTimeDisplay(mealId, hour, minute);
+  const meal = getMeal(mealId);
+  meal.time = (hour && minute) ? formatMealTime(hour, minute) : "";
+  persistMeal(mealId, meal);
+  updateMealCardSummary(mealId, meal);
+}
+function renderMealTimePicker(mealId, meal){
+  const hourEl = document.getElementById("meal-" + mealId + "-hour");
+  const minEl = document.getElementById("meal-" + mealId + "-minute");
+  if(!hourEl || !minEl) return;
+  const active = document.activeElement;
+  if(active === hourEl || active === minEl) return;
+  const { hour, minute } = parseMealTime(meal.time || "");
+  hourEl.value = hour;
+  minEl.value = minute;
+  updateMealTimeDisplay(mealId, hour, minute);
+}
+function buildMealTimePickerHtml(mealId){
+  return `
+    <div class="meal-time-picker">
+      <div class="meal-time-inputs">
+        <select id="meal-${mealId}-hour" aria-label="Часы" onchange="onMealTimeChange('${mealId}')">${getMealHourOptionsHtml()}</select>
+        <span class="meal-time-separator" aria-hidden="true">:</span>
+        <select id="meal-${mealId}-minute" aria-label="Минуты" onchange="onMealTimeChange('${mealId}')">${getMealMinuteOptionsHtml()}</select>
+      </div>
+    </div>
+  `;
+}
+function saveMealTime(mealId){
+  onMealTimeChange(mealId);
+}
+function saveBreakfastTime(){
+  saveMealTime("breakfast");
+}
+function saveMealFeeling(mealId){
+  const meal = getMeal(mealId);
+  const el = document.getElementById("meal-" + mealId + "-feeling");
+  meal.feeling = el ? el.value : "";
+  persistMeal(mealId, meal);
+  updateMealCardSummary(mealId, meal);
+}
+function saveBreakfastFeeling(){
+  saveMealFeeling("breakfast");
+}
+function handleMealEnter(e, mealId, slotId){
+  if(e.key === "Enter") addMealEntry(mealId, slotId);
+}
+function handleBreakfastEnter(e, slotId){
+  handleMealEnter(e, "breakfast", slotId);
+}
+function renderMealCard(mealId){
+  const meal = getMeal(mealId);
+  const feelingEl = document.getElementById("meal-" + mealId + "-feeling");
+  renderMealTimePicker(mealId, meal);
+  if(feelingEl && document.activeElement !== feelingEl) feelingEl.value = meal.feeling || "";
+  renderMealSlots(mealId, meal);
+  const products = getMealProducts(meal);
+  const totals = calcNutrition(products);
+  const calEl = document.getElementById(mealId + "-total-cal");
+  const protEl = document.getElementById(mealId + "-total-prot");
+  const fatEl = document.getElementById(mealId + "-total-fat");
+  const carbsEl = document.getElementById(mealId + "-total-carbs");
+  if(calEl) calEl.textContent = totals.calories;
+  if(protEl) protEl.textContent = totals.protein + " г";
+  if(fatEl) fatEl.textContent = totals.fat + " г";
+  if(carbsEl) carbsEl.textContent = totals.carbs + " г";
+  updateMealCardSummary(mealId, meal);
+}
+function renderBreakfastCard(){
+  renderMealCard("breakfast");
+}
+function renderAllMealCards(){
+  MEALS.forEach(mealId => renderMealCard(mealId));
+}
+function buildMealSlotRow(mealId, slotId){
+  const placeholder = getMealSlotPlaceholder(slotId);
+  const label = getMealSlotLabel(slotId);
+  return `
+    <div class="breakfast-slot-row" id="${mealId}-slot-row-${slotId}" data-slot="${slotId}">
+      <div class="breakfast-slot-header">
+        <div class="breakfast-slot-label">
+          <span class="breakfast-slot-check" id="${mealId}-${slotId}-check"></span>
+          ${label}
+          <span class="breakfast-slot-status" id="${mealId}-${slotId}-status"></span>
+        </div>
+        <button type="button" class="btn-clear breakfast-add-more" id="${mealId}-${slotId}-addmore" style="display:none" onclick="showMealSlotForm('${mealId}', '${slotId}')">+ Добавить ещё</button>
+      </div>
+      <div class="breakfast-slot-items" id="${mealId}-${slotId}-items"></div>
+      <div class="breakfast-slot-form-wrap" id="${mealId}-${slotId}-form">
+        <div class="breakfast-slot-form-header" id="${mealId}-${slotId}-form-header" style="display:none">
+          <span class="breakfast-form-extra-label">Добавить ещё один продукт</span>
+          <button type="button" class="breakfast-form-cancel" onclick="cancelMealSlotForm('${mealId}', '${slotId}')" title="Отменить" aria-label="Отменить">×</button>
+        </div>
+        <div id="${mealId}-${slotId}-search-form">
+          <div class="breakfast-slot-form">
+            <div class="field">
+              <input id="${mealId}-${slotId}-product" placeholder="${placeholder}" autocomplete="off" oninput="showMealSuggestions('${mealId}', '${slotId}')" onkeydown="handleMealEnter(event, '${mealId}', '${slotId}')" />
+              <div id="${mealId}-${slotId}-suggestions" class="suggestions"></div>
+              <div id="${mealId}-${slotId}-notfound" class="notfound"></div>
+            </div>
+            <input id="${mealId}-${slotId}-grams" type="number" min="1" placeholder="Граммы" onkeydown="handleMealEnter(event, '${mealId}', '${slotId}')" />
+            <button type="button" onclick="addMealEntry('${mealId}', '${slotId}')">Добавить</button>
+          </div>
+          <div id="${mealId}-${slotId}-manual-notice" class="breakfast-manual" style="display:none">
+            <div class="breakfast-manual-title">Продукта нет в базе</div>
+            <button type="button" class="btn-clear" onclick="openMealManual('${mealId}', '${slotId}')">Добавить вручную</button>
+          </div>
+        </div>
+        <div id="${mealId}-${slotId}-manual-panel" class="breakfast-manual-panel" style="display:none">
+          <div class="breakfast-manual-title">Ручное добавление продукта</div>
+          <div class="breakfast-manual-form-grid">
+            <div class="breakfast-manual-full">
+              <label for="${mealId}-${slotId}-manual-name">Название продукта</label>
+              <input id="${mealId}-${slotId}-manual-name" type="text" placeholder="Как назвать продукт" />
+            </div>
+            <div>
+              <label for="${mealId}-${slotId}-manual-grams">Граммы</label>
+              <input id="${mealId}-${slotId}-manual-grams" type="number" min="1" placeholder="г" />
+            </div>
+            <div>
+              <label for="${mealId}-${slotId}-manual-cal">Калории на 100 г</label>
+              <input id="${mealId}-${slotId}-manual-cal" type="number" min="0" step="1" placeholder="ккал" />
+            </div>
+            <div>
+              <label for="${mealId}-${slotId}-manual-p">Белки на 100 г</label>
+              <input id="${mealId}-${slotId}-manual-p" type="number" min="0" step="0.1" placeholder="г" />
+            </div>
+            <div>
+              <label for="${mealId}-${slotId}-manual-f">Жиры на 100 г</label>
+              <input id="${mealId}-${slotId}-manual-f" type="number" min="0" step="0.1" placeholder="г" />
+            </div>
+            <div>
+              <label for="${mealId}-${slotId}-manual-c">Углеводы на 100 г</label>
+              <input id="${mealId}-${slotId}-manual-c" type="number" min="0" step="0.1" placeholder="г" />
+            </div>
+          </div>
+          <div class="breakfast-manual-actions">
+            <button type="button" onclick="addMealManualEntry('${mealId}', '${slotId}')">Добавить вручную</button>
+            <button type="button" class="btn-clear" onclick="closeMealManual('${mealId}', '${slotId}')">Отмена</button>
+          </div>
+          <div id="${mealId}-${slotId}-manual-error" class="notfound"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function buildBreakfastSlotRow(slotId){
+  return buildMealSlotRow("breakfast", slotId);
+}
+function getMealHeaderIconImg(mealId){
+  const icons = {
+    breakfast: "icons/breakfast-icon.png",
+    lunch: "icons/lunch-icon.png",
+    snack: "icons/snack-icon.png",
+    dinner: "icons/dinner-icon.png"
+  };
+  const src = icons[mealId] || icons.breakfast;
+  return `<img src="${src}" alt="" class="meal-card-meal-icon-img" width="56" height="56" decoding="async" />`;
+}
+function buildMealCard(mealId){
+  const isOpen = isMealCardOpen(mealId);
+  const slotsHtml = SLOTS.map(slotId => buildMealSlotRow(mealId, slotId)).join("");
+  const card = document.createElement("article");
+  card.className = isOpen ? "meal-card is-open" : "meal-card";
+  card.id = "meal-" + mealId;
+  card.innerHTML = `
+    <button type="button" class="meal-card-header" onclick="toggleMealCard('${mealId}')" aria-expanded="${isOpen}">
+      <span class="meal-card-header-main">
+        <span class="meal-card-meal-icon" aria-hidden="true">${getMealHeaderIconImg(mealId)}</span>
+        <span class="meal-card-header-text">
+          <span class="meal-card-title">${MEAL_LABELS[mealId]}</span>
+          <span class="meal-card-summary" id="meal-${mealId}-summary"></span>
+        </span>
+      </span>
+      <span class="meal-card-chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="meal-card-body">
+      <div class="meal-time-row">
+        <div class="meal-time-label">🕒 Время приёма пищи</div>
+        ${buildMealTimePickerHtml(mealId)}
+      </div>
+      <div id="${mealId}-legacy-block" class="breakfast-legacy-block" style="display:none"></div>
+      <div class="breakfast-slots">${slotsHtml}</div>
+      <div class="meal-totals-wrap">
+        <div class="meal-totals-title">${MEAL_TOTALS_LABEL[mealId]}</div>
+        <div class="summary meal-totals">
+          <div class="box">Ккал<span id="${mealId}-total-cal">0</span></div>
+          <div class="box">Белки<span id="${mealId}-total-prot">0 г</span></div>
+          <div class="box">Жиры<span id="${mealId}-total-fat">0 г</span></div>
+          <div class="box">Углеводы<span id="${mealId}-total-carbs">0 г</span></div>
+        </div>
+      </div>
+      <div class="meal-feeling-row">
+        <label class="meal-feeling-label" for="meal-${mealId}-feeling">Любое физическое ощущение во время и после еды</label>
+        <textarea id="meal-${mealId}-feeling" placeholder="Например: сытость, тяжесть, энергичность, сонливость..." oninput="saveMealFeeling('${mealId}')"></textarea>
+      </div>
+    </div>
+  `;
+  return card;
+}
+function buildBreakfastCard(){
+  return buildMealCard("breakfast");
+}
+function buildMealCards(){
+  const container = document.getElementById("mealCards");
+  if(!container) return;
+  container.innerHTML = "";
+  MEALS.forEach(mealId => {
+    container.appendChild(buildMealCard(mealId));
+  });
+}
+
+initMealUiState();
+initMealCardOpenState();
+function normalize(str){ return str.trim().toLowerCase().replace(/ё/g,"е"); }
+initFoodDB();
+loadDiary();
+migrateLegacyItems();
+buildMealCards();
+renderAllMealCards();
+renderDiaryPanel();
 </script>
 </body>
 </html>
-
